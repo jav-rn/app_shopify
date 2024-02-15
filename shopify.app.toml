@@ -2,7 +2,7 @@
 
 client_id = "f8b388dde42ce28875159df6a3e9364d"
 name = "dropi-v01"
-application_url = "https://as-smile-suited-engineers.trycloudflare.com"
+application_url = "https://ob-va-payment-reg.trycloudflare.com"
 embedded = true
 
 [build]
@@ -16,9 +16,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://as-smile-suited-engineers.trycloudflare.com/auth/callback",
-  "https://as-smile-suited-engineers.trycloudflare.com/auth/shopify/callback",
-  "https://as-smile-suited-engineers.trycloudflare.com/api/auth/callback"
+  "https://ob-va-payment-reg.trycloudflare.com/auth/callback",
+  "https://ob-va-payment-reg.trycloudflare.com/auth/shopify/callback",
+  "https://ob-va-payment-reg.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

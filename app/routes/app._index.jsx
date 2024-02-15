@@ -86,7 +86,7 @@ export default function Index() {
     <Page>
       <ui-title-bar title="Remix app template test">
         <button variant="primary" onClick={generateProduct}>
-          Generate a product
+          Crear producto
         </button>
       </ui-title-bar>
       <BlockStack gap="500">
