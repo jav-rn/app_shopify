@@ -1,4 +1,3 @@
-// Related: https://github.com/remix-run/remix/issues/2835#issuecomment-1144102176
 // Replace the HOST env var with SHOPIFY_APP_URL so that it doesn't break the remix server. The CLI will eventually
 // stop passing in HOST, so we can remove this workaround after the next major release.
 if (
@@ -10,11 +9,26 @@ if (
   delete process.env.HOST;
 }
 
-/** @type {import('@remix-run/dev').AppConfig} */
 module.exports = {
   ignoredRouteFiles: ["**/.*"],
   appDirectory: "app",
   serverModuleFormat: "cjs",
   dev: { port: process.env.HMR_SERVER_PORT || 8002 },
   future: {},
+  browserNodeBuiltinsPolyfill: {
+    modules: {
+      net: true,
+      tls: true,
+      timers: true,
+      events: true,
+      stream: true,
+      buffer: true,
+      string_decoder: true,
+      process: true,
+      crypto: true,
+      zlib: true,
+      util: true,
+      url: true,
+    },
+  },
 };

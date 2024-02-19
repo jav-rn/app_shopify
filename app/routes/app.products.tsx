@@ -6,6 +6,12 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import './public/css/product.css';
 
+//import { createTableProdctsOnSale, prodctsOnSaleSave } from "../db/db.model";
+
+//createTableProdctsOnSale();
+
+//prodctsOnSaleSave('asdfds','asdfds');
+
 
 export const query = `
 query Products($first: Int!, $after: String) {
@@ -106,6 +112,12 @@ const Products = () => {
         }
         console.log('products seleccionados',selectedItems )
         
+    };
+
+    const saveViewProductsOnSale = () => {
+      console.log('Products seleccionados:', selectedItems);
+      // Aquí puedes llamar a la función para guardar los productos seleccionados en la base de datos
+      // prodctsOnSaleSave(product_shopify_id, sku);
     };
   /******** */
 
@@ -215,7 +227,7 @@ const Products = () => {
                 onNext={() => handlePagination(currentPage + 1)}
             />
 
-        <button>Guardar seleccionados</button>
+          <button onClick={saveViewProductsOnSale}>Guardar seleccionados</button>
         </Card>
     </Page>
     );
