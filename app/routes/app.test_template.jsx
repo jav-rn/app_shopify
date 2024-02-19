@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { json } from "@remix-run/node";
+import { useActionData, useNavigation, useSubmit } from "@remix-run/react";
 import {
   Box,
   Card,
@@ -10,6 +12,47 @@ import {
   BlockStack,
   DataTable,
 } from "@shopify/polaris";
+import { authenticate } from "../shopify.server";
+
+
+export const loader = async ({ request }) => {
+  await authenticate.admin(request);
+
+  return null;
+};
+
+
+
+
+// Función para realizar la consulta GraphQL de los productos
+const fetchProductsFromDatabase = async () => {
+  try {
+    const loader = { request: {} }; // Esto podría necesitar ser configurado adecuadamente dependiendo de tu aplicación
+    const { admin } = await authenticate.admin(loader);
+    const response = await admin.graphql(`
+    #graphql
+
+    query {
+      products(first: 10) {
+        edges {
+          node {
+            id
+            title
+            description
+          }
+        }
+      }
+    }
+    `);
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    return { error: error.message }; // Otra opción es lanzar el error aquí
+  }
+};
+
+
 
 
 export default function AdditionalPage() {
@@ -18,6 +61,15 @@ export default function AdditionalPage() {
 
   // Simula la obtención de los productos (debes reemplazar esto con tu lógica real)
   useEffect(() => {
+
+    const fetchProducts = async () =>{
+      const response = await fetchProductsFromDatabase();
+      console.log('response_a', response);
+    }
+    fetchProducts();
+
+
+    console.log(products,'products_response 2' );
     // Aquí podrías hacer una llamada a una API, una consulta a la base de datos, etc.
     // Por ahora, simplemente vamos a simular algunos datos de ejemplo
     const fakeProducts = [
