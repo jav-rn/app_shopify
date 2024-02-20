@@ -1,12 +1,11 @@
 import type { LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { Card, Layout, List, Page, DataTable, Pagination, Thumbnail } from "@shopify/polaris";
+import { Card, Layout, List, Page, DataTable, Pagination, Thumbnail, useIndexResourceState } from "@shopify/polaris";
 import { apiVersion, authenticate } from "~/shopify.server";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
-import './public/css/product.css';
 
-
+const ITEMS_PER_PAGE = 10;
 export const query = `
 query Products($first: Int!, $after: String) {
     products(first: $first, after: $after) {
@@ -54,171 +53,199 @@ query Products($first: Int!, $after: String) {
 
 
 export const loader: LoaderFunction = async ({ request }) => {
-    const { session } = await authenticate.admin(request)
-    const { shop, accessToken } = session;
+  const { session } = await authenticate.admin(request)
+  const { shop, accessToken } = session;
+  const query_base_url = `https://${shop}/admin/api/${apiVersion}/graphql.json`; 
 
-    
-    try {
-        const response = await fetch(`https://${shop}/admin/api/${apiVersion}/graphql.json`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-Shopify-Access-Token": accessToken!
-            },
-            body: JSON.stringify({
-                query: query,
-                variables: { first: 10, after: null } // Initial request fetches first 10 products
-              })
-        });
+  try {
+    const response = await fetch(query_base_url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Shopify-Access-Token": accessToken!
+      },
+      body: JSON.stringify({
+        query: query,
+        variables: { first: 10, after: null } // Initial request fetches first 10 products
+      })
+    });
 
-        if (response.ok) {
+    if (response.ok) {
 
-            const data = await response.json()
 
-        
-            const {
-                data: {
-                    products: { edges }
-                }
-            } = data;
 
-            return edges
-        }
+      const data = await response.json()
+      console.log(data, 'old_data')
 
-        return null
-    } catch (err) {
-        console.log(err)
+
+      const { data: { products: { edges } } } = data;
+      const { data: { products: { pageInfo } } } = data;
+      return { 
+        products: edges, 
+        pageInfo: pageInfo, 
+        session_old: session, 
+        request: request, 
+        query_base_url: query_base_url, 
+        accessToken: accessToken  
+      }
     }
+
+
+    return null
+  } catch (err) {
+    console.log(err)
+  }
 };
 
 
 
 const Products = () => {
-    const location = useLocation();
 
-      /* Seleccion de items  */
-      const [selectedItems, setSelectedItems] = useState([]);
-      const handleCheckboxChange = (productId) => {
-        if (selectedItems.includes(productId)) {
-            setSelectedItems(selectedItems.filter(item => item !== productId));
-        } else {
-            setSelectedItems([...selectedItems, productId]);
-        }
-        console.log('products seleccionados',selectedItems )
-        
-    };
+  const [currentPage, setCurrentPage] = useState(1); // Definir currentPage aquí
+  const location = useLocation();
+
+
+
+  /* Seleccion de items  */
+  const [selectedItems, setSelectedItems] = useState([]);
+  const handleCheckboxChange = (productId) => {
+    if (selectedItems.includes(productId)) {
+      setSelectedItems(selectedItems.filter(item => item !== productId));
+    } else {
+      setSelectedItems([...selectedItems, productId]);
+    }
+    console.log('products seleccionados', selectedItems)
+
+  };
   /******** */
 
-    const searchParams = new URLSearchParams(location.search);
-    const page = parseInt(searchParams.get("page") || "1");
-    console.log('page->',page)
+  const data: any = useLoaderData();
 
-    const products: any = useLoaderData();
-    //console.log(products);
-
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 5;
-    const lastItemIndex = currentPage * itemsPerPage;
-    const firstItemIndex = lastItemIndex - itemsPerPage;
-   // const currentProducts = products.slice(firstItemIndex, lastItemIndex);
-   const currentProducts = products;
+  console.log(data,'data__ddd');
 
 
-    const rows = currentProducts.map((product: any) => {
-        const { node } = product;
-        const { images, title, description, variants, id, collections } = node;
-        const sku      = variants.edges[0]?.node.sku || '';
-        const stock    = variants.edges[0]?.node.inventoryQuantity || '';
-        const price    = variants.edges[0]?.node.price || '';
-        const imageSrc = images.edges[0]?.node.originalSrc || '';
-        const category = collections.edges[0]?.node.title || '';
+  const products: any = data.products;
+  const pageInfo: any = data.pageInfo;
+  const session_old: any = data.old_session;
 
+  
+  const handlePagination =    async (direction: string, session_old: any) => {
 
-
-        // Función para limpiar las etiquetas HTML
-        /*
-        const stripHtmlTags = (html: string) => {
-            const cheerio = require('cheerio');
-            const $ = cheerio.load(html);
-            return $.text();
-        };
-        */
-
-        //console.log(products,'products')
-        return {
-            imageSrc,
-            title: title || '',
-            description,
-            sku,
-            stock,
-            id,
-            price,
-            category
-        };
-    
+    console.log(data.query_base_url,'data.query_base_url')
+    console.log(data.accessToken, 'data_access_token')
+    let afterCursor = null;
+    if (direction === "next" && pageInfo.hasNextPage) {
+      afterCursor = pageInfo.endCursor;
+    } else if (direction === "previous" && pageInfo.hasPreviousPage) {
+      afterCursor = pageInfo.startCursor;
     }
-    
-    
-    );
+    console.log('afterCursor',afterCursor)
 
-    const handlePagination = (newPage: number) => {
-      //  const baseUrl =  'https://admin.shopify.com/store/dropi-v1/apps/dropi-v01/app';//window.location.origin;
-      //  console.log(`${baseUrl}/products?page=${newPage}`,'urll')
-      //  window.location.href = `${baseUrl}/products?page=${newPage}`;
+    if (afterCursor) {
+      //const { shop, accessToken } = session_old;
+      const response = await fetch(data.query_base_url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Shopify-Access-Token": data.accessToken!
+        },
+        body: JSON.stringify({
+          query: query,
+          variables: { first: ITEMS_PER_PAGE, after: afterCursor } // Load next page
+        })
+      });
+      if (response.ok) {
+        const newData = await response.json();
+        const { products: newProducts } = newData.data;
+        setCurrentPage(direction === "next" ? currentPage + 1 : currentPage - 1);
+        return newProducts.edges;
+      }
+    }
+  };
+
+
+  const currentProducts = products;
+
+
+  const rows = currentProducts.map((product: any) => {
+    const { node } = product;
+    const { images, title, description, variants, id, collections } = node;
+    const sku = variants.edges[0]?.node.sku || '';
+    const stock = variants.edges[0]?.node.inventoryQuantity || '';
+    const price = variants.edges[0]?.node.price || '';
+    const imageSrc = images.edges[0]?.node.originalSrc || '';
+    const category = collections.edges[0]?.node.title || '';
+
+    return {
+      imageSrc,
+      title: title || '',
+      description,
+      sku,
+      stock,
+      id,
+      price,
+      category
     };
-/*
-    const handlePagination = (newPage: number) => {
-        setCurrentPage(newPage);
-    };
-    */
 
-    return (
-        <Page title="Products" fullWidth >
-        <Card >
-            <DataTable 
-                columnContentTypes={['text','text', 'text', 'text','text', 'text', 'text', 'text']}
-                headings={['Disponible a venta','Imagen', 'Nombre', 'SKU', 'Stock','price','Categoria','Descripción','ID']}
-                rows={rows.map((product: any) => [
-                  <input
-                  type="checkbox"
-                  onChange={() => handleCheckboxChange(product.id)}
-                  checked={selectedItems.includes(product.id)}
-              />,
+  }
 
-                    <div>
-                        <Thumbnail source={product.imageSrc} alt={product.title} size="large" />
-                    </div>,
-                    <div>{product.title}</div>,
-                    <div>{product.sku}</div>,
-                    <div>{product.stock}</div>,
-                    <div>{product.price}</div>,
-                    <div>{product.category}</div>,
-                    <div 
-                    style={{ 
-                      maxHeight: '100px', 
-                      overflow: 'auto', 
-                      padding: '5px' ,
-                      whiteSpace: 'normal',
-                    }}
-                    >{product.description}</div>,
-                    <div>{product.id}</div>,
-       
-                ])}
-             
-            />
+  );
 
 
-            <Pagination
-                hasPrevious={currentPage !== 1}
-                onPrevious={() => handlePagination(currentPage - 1)}
-                hasNext={currentPage * itemsPerPage < products.length}
-                onNext={() => handlePagination(currentPage + 1)}
-            />
+  /*
+      const handlePagination = (newPage: number) => {
+          setCurrentPage(newPage);
+      };
+      */
+
+  return (
+    <Page title="Products" fullWidth >
+      <Card >
+        <DataTable
+          columnContentTypes={['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text']}
+          headings={['Disponible a venta', 'Imagen', 'Nombre', 'SKU', 'Stock', 'price', 'Categoria', 'Descripción', 'ID']}
+          rows={rows.map((product: any) => [
+            <input
+              type="checkbox"
+              onChange={() => handleCheckboxChange(product.id)}
+              checked={selectedItems.includes(product.id)}
+            />,
+
+            <div>
+              <Thumbnail source={product.imageSrc} alt={product.title} size="large" />
+            </div>,
+            <div>{product.title}</div>,
+            <div>{product.sku}</div>,
+            <div>{product.stock}</div>,
+            <div>{product.price}</div>,
+            <div>{product.category}</div>,
+            <div
+              style={{
+                maxHeight: '100px',
+                overflow: 'auto',
+                padding: '5px',
+                whiteSpace: 'normal',
+              }}
+            >{product.description}</div>,
+            <div>{product.id}</div>,
+
+          ])}
+
+        />
+
+
+
+        <div>
+          <button onClick={() => handlePagination("previous", session_old)} disabled={!pageInfo.hasPreviousPage}>Previous</button>
+          <button onClick={() => handlePagination("next", session_old)} disabled={!pageInfo.hasNextPage}>Next</button>
+        </div>
+
+
 
         <button>Guardar seleccionados</button>
-        </Card>
+      </Card>
     </Page>
-    );
+  );
 };
 
 export default Products;
