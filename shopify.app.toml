@@ -2,7 +2,7 @@
 
 client_id = "f8b388dde42ce28875159df6a3e9364d"
 name = "dropi-v01"
-application_url = "https://la-burn-utility-cartridge.trycloudflare.com"
+application_url = "https://above-red-sacrifice-streams.trycloudflare.com"
 embedded = true
 
 [build]
@@ -16,9 +16,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://la-burn-utility-cartridge.trycloudflare.com/auth/callback",
-  "https://la-burn-utility-cartridge.trycloudflare.com/auth/shopify/callback",
-  "https://la-burn-utility-cartridge.trycloudflare.com/api/auth/callback"
+  "https://above-red-sacrifice-streams.trycloudflare.com/auth/callback",
+  "https://above-red-sacrifice-streams.trycloudflare.com/auth/shopify/callback",
+  "https://above-red-sacrifice-streams.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
