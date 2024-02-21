@@ -1,11 +1,12 @@
 import type { LoaderFunction } from "@remix-run/node";
 import { useLoaderData, Link } from "@remix-run/react";
-import { Card, Layout, List, Page, DataTable, Thumbnail, useIndexResourceState, Button } from "@shopify/polaris";
+import { Card, Layout, List, Page, DataTable, Thumbnail, useIndexResourceState, Button, TextField } from "@shopify/polaris";
 import { getPaginationVariables, Pagination } from '@shopify/hydrogen';
 import { apiVersion, authenticate } from "~/shopify.server";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { json } from '@shopify/remix-oxygen';
+import { _OrderServices } from "stock_ago_services/order.services";
 
 const ITEMS_PER_PAGE = 10;
 export const query = `
@@ -14,7 +15,7 @@ query AllProducts(
   $last: Int
   $startCursor: String
   $endCursor: String
-) {
+  ) {
   products(first: $first, last: $last, before: $startCursor, after: $endCursor) {
     nodes {
       id
@@ -54,6 +55,9 @@ query AllProducts(
 }
 `;
 
+/* ejemplo de uso para service_new_order */
+const orderServices = new _OrderServices(); // Instanciar la clase _OrderService 
+/*************************************** */
 
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -63,7 +67,11 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const variables = getPaginationVariables(request, {
     pageBy: 4,
+   searchTerm: '' // Inicialmente no hay término de búsqueda
   });
+  /* ejemplo de uso para service_new_order */
+  let resp = orderServices.send_create_order({"test":"test de envio de data a server externo"});
+  /*************************************** */
 
   try {
     const response = await fetch(query_base_url, {
@@ -103,7 +111,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 const Products = () => {
   const { products } = useLoaderData();
-  // console.log(products, 'products')
+    // console.log(products, 'products')
 
   // Mapear los productos para crear las filas de la tabla
   const rows = products.nodes.map(product => {
@@ -133,7 +141,7 @@ const Products = () => {
   return (
     <Card>
       <h1>Productos</h1>
-      <DataTable
+            <DataTable
         columnContentTypes={['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text']}
         headings={['Disponible a venta', 'Imagen', 'Nombre', 'SKU', 'Stock', 'price', 'Categoria', 'Descripción', 'ID']}
         rows={rows.map((product: any) => [
