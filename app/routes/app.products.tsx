@@ -75,7 +75,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 
       const data = await response.json()
-      console.log(data, 'old_data')
+     // console.log(data, 'old_data')
 
 
       const { data: { products: { edges } } } = data;
@@ -114,14 +114,14 @@ const Products = () => {
     } else {
       setSelectedItems([...selectedItems, productId]);
     }
-    console.log('products seleccionados', selectedItems)
+    //console.log('products seleccionados', selectedItems)
 
   };
   /******** */
 
   const data: any = useLoaderData();
 
-  console.log(data,'data__ddd');
+  //console.log(data,'data__ddd');
 
 
   const products: any = data.products;
@@ -131,15 +131,15 @@ const Products = () => {
   
   const handlePagination =    async (direction: string, session_old: any) => {
 
-    console.log(data.query_base_url,'data.query_base_url')
-    console.log(data.accessToken, 'data_access_token')
+    //console.log(data.query_base_url,'data.query_base_url')
+    //console.log(data.accessToken, 'data_access_token')
     let afterCursor = null;
     if (direction === "next" && pageInfo.hasNextPage) {
       afterCursor = pageInfo.endCursor;
     } else if (direction === "previous" && pageInfo.hasPreviousPage) {
       afterCursor = pageInfo.startCursor;
     }
-    console.log('afterCursor',afterCursor)
+    //console.log('afterCursor',afterCursor)
 
     if (afterCursor) {
       //const { shop, accessToken } = session_old;
@@ -190,6 +190,8 @@ const Products = () => {
   }
 
   );
+
+  console.log( rows ,'rows_ini')
 
 
   /*

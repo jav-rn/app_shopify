@@ -117,9 +117,9 @@ const Products = () => {
     };
 
     return (
-        <Page sectioned style={{ width: '100%', maxWidth: '100%', margin: '0 auto' }} >
-            <Card sectioned style={{ width: '100%', maxWidth: '100%', margin: '0 auto' }}>
-                <DataTable  sectioned style={{ width: '100%', maxWidth: '100%', margin: '0 auto' }}
+        <Page sectioned  >
+            <Card sectioned >
+                <DataTable  sectioned 
 
 
                     columnContentTypes={['text', 'text', 'text','text', 'text', 'text', 'text']}

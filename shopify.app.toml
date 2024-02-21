@@ -2,7 +2,7 @@
 
 client_id = "f8b388dde42ce28875159df6a3e9364d"
 name = "dropi-v01"
-application_url = "https://above-red-sacrifice-streams.trycloudflare.com"
+application_url = "https://bottle-robbie-dictionaries-venue.trycloudflare.com"
 embedded = true
 
 [build]
@@ -16,9 +16,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://above-red-sacrifice-streams.trycloudflare.com/auth/callback",
-  "https://above-red-sacrifice-streams.trycloudflare.com/auth/shopify/callback",
-  "https://above-red-sacrifice-streams.trycloudflare.com/api/auth/callback"
+  "https://bottle-robbie-dictionaries-venue.trycloudflare.com/auth/callback",
+  "https://bottle-robbie-dictionaries-venue.trycloudflare.com/auth/shopify/callback",
+  "https://bottle-robbie-dictionaries-venue.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

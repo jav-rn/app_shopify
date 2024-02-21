@@ -23,8 +23,8 @@ export default function App() {
           Home
         </Link>
         <Link to="/app/additional">Additional page</Link>
-        <Link to="/app/test_template">Tabla productos</Link>
-        <Link to="/app/products">Tabla productos 2</Link>
+        <Link to="/app/products">Tabla productos</Link>
+        <Link to="/app/products_v2">Tabla productos 2</Link>
         <Link to="/app/collections">Coleccion ejemplo</Link>
       </ui-nav-menu>
       <Outlet />
