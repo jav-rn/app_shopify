@@ -2,7 +2,7 @@
 
 client_id = "f8b388dde42ce28875159df6a3e9364d"
 name = "dropi-v01"
-application_url = "https://cry-serious-innovation-positive.trycloudflare.com"
+application_url = "https://extension-trash-screensavers-gabriel.trycloudflare.com"
 embedded = true
 
 [build]
@@ -12,17 +12,17 @@ include_config_on_deploy = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "read_orders,read_products,write_orders,write_products"
+scopes = "read_orders,read_products,write_orders"
 
 [auth]
 redirect_urls = [
-  "https://cry-serious-innovation-positive.trycloudflare.com/auth/callback",
-  "https://cry-serious-innovation-positive.trycloudflare.com/auth/shopify/callback",
-  "https://cry-serious-innovation-positive.trycloudflare.com/api/auth/callback"
+  "https://extension-trash-screensavers-gabriel.trycloudflare.com/auth/callback",
+  "https://extension-trash-screensavers-gabriel.trycloudflare.com/auth/shopify/callback",
+  "https://extension-trash-screensavers-gabriel.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
-api_version = "2024-01"
+api_version = "2022-07"
 
 [pos]
 embedded = false

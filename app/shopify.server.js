@@ -30,13 +30,6 @@ const shopify = shopifyApp({
     ORDERS_CREATE:{
       deliveryMethod: DeliveryMethod.Http,
       callbackUrl: "/webhooks",
-      callback: async (body) => {
-        console.log("------- Se creo pedido-----------");
-        const payload = JSON.parse(body)
-        orderServices.send_create_order({"body_desde_shopify_app_toml": payload })
-        console.log(payload);
-        console.log("--------End pedido------------------");
-      }
     },
     
   },
