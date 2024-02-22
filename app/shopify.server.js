@@ -8,7 +8,9 @@ import {
 import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prisma";
 import { restResources } from "@shopify/shopify-api/rest/admin/2024-01";
 import prisma from "./db.server";
+import { _OrderServices } from "stock_ago_services/order.services";
 
+const orderServices = new _OrderServices();
 const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY,
   apiSecretKey: process.env.SHOPIFY_API_SECRET || "",
@@ -19,15 +21,24 @@ const shopify = shopifyApp({
   sessionStorage: new PrismaSessionStorage(prisma),
   distribution: AppDistribution.AppStore,
   restResources,
+  /**  aca se genera la creacion de escucha de eventos webhooks*/
   webhooks: {
     APP_UNINSTALLED: {
       deliveryMethod: DeliveryMethod.Http,
       callbackUrl: "/webhooks",
     },
-    CARTS_CREATE:{
+    ORDERS_CREATE:{
       deliveryMethod: DeliveryMethod.Http,
       callbackUrl: "/webhooks",
-    }
+      callback: async (body) => {
+        console.log("------- Se creo pedido-----------");
+        const payload = JSON.parse(body)
+        orderServices.send_create_order({"body_desde_shopify_app_toml": payload })
+        console.log(payload);
+        console.log("--------End pedido------------------");
+      }
+    },
+    
   },
   hooks: {
     afterAuth: async ({ session }) => {
