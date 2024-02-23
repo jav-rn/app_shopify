@@ -2,7 +2,7 @@
 
 client_id = "f8b388dde42ce28875159df6a3e9364d"
 name = "dropi-v01"
-application_url = "https://extension-trash-screensavers-gabriel.trycloudflare.com"
+application_url = "https://shopping-automatic-england-viewer.trycloudflare.com"
 embedded = true
 
 [build]
@@ -16,9 +16,9 @@ scopes = "read_orders,read_products,write_orders"
 
 [auth]
 redirect_urls = [
-  "https://extension-trash-screensavers-gabriel.trycloudflare.com/auth/callback",
-  "https://extension-trash-screensavers-gabriel.trycloudflare.com/auth/shopify/callback",
-  "https://extension-trash-screensavers-gabriel.trycloudflare.com/api/auth/callback"
+  "https://shopping-automatic-england-viewer.trycloudflare.com/auth/callback",
+  "https://shopping-automatic-england-viewer.trycloudflare.com/auth/shopify/callback",
+  "https://shopping-automatic-england-viewer.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
