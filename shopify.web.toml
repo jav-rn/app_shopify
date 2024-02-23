@@ -7,3 +7,5 @@ dev = "npm exec remix dev"
 
 [hmr_server]
 http_paths = ["/ping"]
+
+scopes = "read_orders,read_products,write_orders"

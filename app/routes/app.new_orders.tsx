@@ -23,14 +23,14 @@ export const loader: LoaderFunction = async ({ request }) => {
         console.log(webhook, 'webhook order created-------')
 
        // const webhook = new shopify.rest.Webhook({session: session});
-        webhook.address = "https://solucionesintegralesmallorca.com/portafoliojav/test_stock_ago/";
+        webhook.address = "https://dropi-v1.myshopify.com/admin/api/2024-01/webhooks.json";
         webhook.topic = "orders/create";
         webhook.format = "json";
         await webhook.save({
           update: true,
         });
 
-
+        console.log("token", accessToken)
         console.log("END");
         
 

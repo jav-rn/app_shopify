@@ -32,9 +32,17 @@ export const action = async ({ request }) => {
       console.log("<-----se creo orden------>")
       //orderServices.send_create_order({"payload_ORDERS_CREATE_ok": "test ok"})
       console.log(payload)
-      orderServices.send_create_order({"test_body": payload});
+      orderServices.send_create_order({"webhook_orders_create_body": payload});
       console.log("<-----end se creo orden------>")
       break;
+
+      case "PRODUCTS_UPDATE":
+        console.log("<-----se edito producto------>")
+        orderServices.send_product_update({"webhook_product_create_body": payload});
+        console.log("<-----se edito producto------>")
+        break;
+
+
           case "CUSTOMERS_DATA_REQUEST":
     case "CUSTOMERS_REDACT":
     case "SHOP_REDACT":
