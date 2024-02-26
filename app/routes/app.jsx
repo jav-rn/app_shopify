@@ -28,6 +28,7 @@ export default function App() {
         <Link to="/app/collections">Coleccion ejemplo</Link>
         <Link to="/app/products_v2">Productos importados</Link>
         <Link to="/app/new_orders">Test de pedidos</Link>
+        <Link to="/app/orders_view">Todas las ordenes</Link>
       </ui-nav-menu>
       <Outlet />
     </AppProvider>

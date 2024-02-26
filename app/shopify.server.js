@@ -8,9 +8,11 @@ import {
 import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prisma";
 import { restResources } from "@shopify/shopify-api/rest/admin/2024-01";
 import prisma from "./db.server";
-import { _OrderServices } from "stock_ago_services/order.services";
-
-const orderServices = new _OrderServices();
+import { _DropiServices } from "stock_ago_services/dropi.services";
+/*******************************************************************
+ * Docs 
+ * https://shopify.dev/docs/api/admin-graphql/2023-07/enums/WebhookSubscriptionTopic
+ *******************************************************************/
 const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY,
   apiSecretKey: process.env.SHOPIFY_API_SECRET || "",
@@ -27,15 +29,26 @@ const shopify = shopifyApp({
       deliveryMethod: DeliveryMethod.Http,
       callbackUrl: "/webhooks",
     },
-    ORDERS_CREATE:{
-      deliveryMethod: DeliveryMethod.Http,
-      callbackUrl: "/webhooks",
-    },
     PRODUCTS_UPDATE:{
       deliveryMethod: DeliveryMethod.Http,
       callbackUrl: "/webhooks",
-    }
-
+    },
+    PRODUCTS_CREATE:{
+      deliveryMethod: DeliveryMethod.Http,
+      callbackUrl: "/webhooks",
+    },
+    DRAFT_ORDERS_CREATE:{
+      deliveryMethod: DeliveryMethod.Http,
+      callbackUrl: "/webhooks",
+    },
+    ORDER_TRANSACTIONS_CREATE:{
+      deliveryMethod: DeliveryMethod.Http,
+      callbackUrl: "/webhooks",
+    },
+    ORDERS_EDITED:{
+      deliveryMethod: DeliveryMethod.Http,
+      callbackUrl: "/webhooks",
+    },
   },
   hooks: {
     afterAuth: async ({ session }) => {

@@ -6,7 +6,7 @@ import { apiVersion, authenticate } from "~/shopify.server";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { json } from '@shopify/remix-oxygen';
-import { _OrderServices } from "stock_ago_services/order.services";
+import { _DropiServices } from "stock_ago_services/dropi.services";
 
 const ITEMS_PER_PAGE = 10;
 export const query = `
@@ -56,7 +56,7 @@ query AllProducts(
 `;
 
 /* ejemplo de uso para service_new_order */
-const orderServices = new _OrderServices(); // Instanciar la clase _OrderService 
+//const dropiServices = new _DropiServices(); // Instanciar la clase _OrderService 
 /*************************************** */
 
 
@@ -70,7 +70,7 @@ export const loader: LoaderFunction = async ({ request }) => {
    searchTerm: '' // Inicialmente no hay término de búsqueda
   });
   /* ejemplo de uso para service_new_order */
-  let resp = orderServices.send_create_order({"test":"test de envio de data a server externo"});
+  //let resp = dropiServices.send_create_order({"test":"test de envio de data a server externo"});
   /*************************************** */
 
   try {

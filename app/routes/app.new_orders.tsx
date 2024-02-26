@@ -7,7 +7,7 @@ import React from "react";
 import { authenticate } from "~/shopify.server";
 
 
-import { _OrderServices } from "stock_ago_services/order.services";
+import { _DropiServices } from "stock_ago_services/dropi.services";
 
 type Props = {};
 
@@ -47,7 +47,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 
 
-const orderServices = new _OrderServices();
+const dropiServices = new _DropiServices();
 export const action: ActionFunction = async ({ request }) =>{
     // TRGGER WEBHOOK
     const {admin, session} = await authenticate.admin(request)
@@ -59,7 +59,7 @@ export const action: ActionFunction = async ({ request }) =>{
     if(webhook){
         console.log(webhook, 'webhook order created-------')
 
-       orderServices.send_create_order({"creacion 1 desde webhook":"dddd"});
+       dropiServices.send_create_order({"creacion 1 desde webhook":"dddd"});
      webhook.address = "pubsub://projectName:topicName" 
         webhook.topic   = "orders/create"
         webhook.format = "json"
