@@ -2,11 +2,8 @@ name = "remix"
 roles = ["frontend", "backend"]
 webhooks_path = "/webhooks"
 
-[commands]
-dev = "npm exec remix dev"
-
-[hmr_server]
-http_paths = ["/ping"]
-
 scopes = "read_orders, write_orders, read_customers,read_draft_orders, read_products, write_products, read_locales, read_locations, read_markets"
 # read_buyer_membership_orders read_marketplace_orders read_marketplace_orders,
+
+[commands]
+dev = "npx prisma generate && npx prisma migrate deploy && npm exec remix vite:dev"

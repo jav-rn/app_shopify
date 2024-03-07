@@ -27,33 +27,55 @@ export const action = async ({ request }) => {
     Math.floor(Math.random() * 4)
   ];
   const response = await admin.graphql(
-    `#graphql
-      mutation populateProduct($input: ProductInput!) {
-        productCreate(input: $input) {
-          product {
+      `#graphql
+      query AllProducts(
+        $first: Int
+        $last: Int
+        $startCursor: String
+        $endCursor: String
+        ) {
+        products(first: $first, last: $last, before: $startCursor, after: $endCursor) {
+          nodes {
             id
             title
-            handle
-            status
-            variants(first: 10) {
+            description
+            images(first: 1) {
               edges {
                 node {
-                  id
+                  originalSrc
+                }
+              }
+            }
+            variants(first: 1) {
+              edges {
+                node {
+                  sku
+                  inventoryQuantity
                   price
-                  barcode
-                  createdAt
+                }
+              }
+            }
+            collections(first: 1) {
+              edges {
+                node {
+                  title
                 }
               }
             }
           }
+          pageInfo {
+            hasPreviousPage
+            hasNextPage
+            startCursor
+            endCursor
+          }
         }
-      }`,
+      }
+      `,
+
+      
     {
-      variables: {
-        input: {
-          title: `${color} Snowboard`,
-          variants: [{ price: Math.random() * 100 }],
-        },
+      variables:{
       },
     },
   );
@@ -84,9 +106,9 @@ export default function Index() {
 
   return (
     <Page>
-      <ui-title-bar title="Remix app template test">
+      <ui-title-bar title="Remix app template">
         <button variant="primary" onClick={generateProduct}>
-          Crear producto
+          Generate a product
         </button>
       </ui-title-bar>
       <BlockStack gap="500">

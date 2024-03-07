@@ -1,8 +1,8 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "f8b388dde42ce28875159df6a3e9364d"
-name = "dropi-v01"
-application_url = "https://mainly-tar-currently-yale.trycloudflare.com"
+client_id = "43dd49cffb45682dddc07c4fa6687663"
+name = "dropicon"
+application_url = "https://dramatic-heather-investing-accept.trycloudflare.com"
 embedded = true
 
 [build]
@@ -16,13 +16,13 @@ scopes = "read_customers,read_draft_orders,read_locales,read_locations,read_mark
 
 [auth]
 redirect_urls = [
-  "https://mainly-tar-currently-yale.trycloudflare.com/auth/callback",
-  "https://mainly-tar-currently-yale.trycloudflare.com/auth/shopify/callback",
-  "https://mainly-tar-currently-yale.trycloudflare.com/api/auth/callback"
+  "https://dramatic-heather-investing-accept.trycloudflare.com/auth/callback",
+  "https://dramatic-heather-investing-accept.trycloudflare.com/auth/shopify/callback",
+  "https://dramatic-heather-investing-accept.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
-api_version = "2022-07"
+api_version = "2024-01"
 
 [pos]
 embedded = false

@@ -110,7 +110,14 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 
 const Products = () => {
+  const loaderData = useLoaderData();
+
+  if (!loaderData || !loaderData.products) {
+    return <h2>No hay productos disponibles</h2>;
+  }
+
   const { products } = useLoaderData();
+
     // console.log(products, 'products')
 
   // Mapear los productos para crear las filas de la tabla

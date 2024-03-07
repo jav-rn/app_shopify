@@ -1,11 +1,9 @@
 import { json } from "@remix-run/node";
 import { Link, Outlet, useLoaderData, useRouteError } from "@remix-run/react";
-import polarisStyles from "@shopify/polaris/build/esm/styles.css";
 import { boundary } from "@shopify/shopify-app-remix/server";
 import { AppProvider } from "@shopify/shopify-app-remix/react";
+import "@shopify/polaris/build/esm/styles.css";
 import { authenticate } from "../shopify.server";
-
-export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
 
 export const loader = async ({ request }) => {
   await authenticate.admin(request);
@@ -16,8 +14,6 @@ export const loader = async ({ request }) => {
 export default function App() {
   const { apiKey } = useLoaderData();
 
-
-  // <Link to="/app/products">Tabla productos</Link>
   return (
     <AppProvider isEmbeddedApp apiKey={apiKey}>
       <ui-nav-menu>
@@ -25,10 +21,8 @@ export default function App() {
           Home
         </Link>
         <Link to="/app/additional">Additional page</Link>
-        <Link to="/app/collections">Coleccion ejemplo</Link>
-        <Link to="/app/products_v2">Productos importados</Link>
-        <Link to="/app/new_orders">Test de pedidos</Link>
-        <Link to="/app/orders_view">Todas las ordenes</Link>
+		<Link to="/app/products_v2">Productos importados</Link>
+	    <Link to="/app/orders_view">Todas las ordenes</Link>
       </ui-nav-menu>
       <Outlet />
     </AppProvider>
