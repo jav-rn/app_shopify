@@ -1,121 +1,67 @@
 import type { LoaderFunction } from "@remix-run/node";
 import { useLoaderData, Link } from "@remix-run/react";
-import { Card, Layout, List, Page, DataTable, Thumbnail, useIndexResourceState, Button, TextField } from "@shopify/polaris";
+import { Card, Layout, List, Page, DataTable, Thumbnail, useIndexResourceState, Button, TextField, Spinner } from "@shopify/polaris";
 import { getPaginationVariables, Pagination } from '@shopify/hydrogen';
 import { apiVersion, authenticate } from "~/shopify.server";
-import { _DropiServices } from "_services/dropi.services";
+//import { _DropiModelOrder } from "_models/_DropiModelOrder";
+import { _DropiModelProducts } from "_models/_DropiModelProducts";
+import React, { useState, useEffect } from 'react';
+//import { NavDropi } from './NavDropi'
 
-const ITEMS_PER_PAGE = 10;
-export const query = `
-query AllProducts(
-  $first: Int
-  $last: Int
-  $startCursor: String
-  $endCursor: String
-  ) {
-  products(first: $first, last: $last, before: $startCursor, after: $endCursor) {
-    nodes {
-      id
-      title
-      description
-      images(first: 1) {
-        edges {
-          node {
-            originalSrc
-          }
-        }
-      }
-      variants(first: 1) {
-        edges {
-          node {
-            sku
-            inventoryQuantity
-            price
-          }
-        }
-      }
-      collections(first: 1) {
-        edges {
-          node {
-            title
-          }
-        }
-      }
-    }
-    pageInfo {
-      hasPreviousPage
-      hasNextPage
-      startCursor
-      endCursor
-    }
-  }
-}
-`;
 
-/* ejemplo de uso para service_new_order */
-//const dropiServices = new _DropiServices(); // Instanciar la clase _OrderService 
-/*************************************** */
-
+const dropiModelProducts = new _DropiModelProducts();
 
 export const loader: LoaderFunction = async ({ request }) => {
   const { session } = await authenticate.admin(request)
-  const { shop, accessToken } = session;
-  const query_base_url = `https://${shop}/admin/api/${apiVersion}/graphql.json`;
-
   const variables = getPaginationVariables(request, {
     pageBy: 4,
-   searchTerm: '' // Inicialmente no hay término de búsqueda
+    searchTerm: '' // Inicialmente no hay término de búsqueda
   });
-  /* ejemplo de uso para service_new_order */
-  //let resp = dropiServices.send_create_order({"test":"test de envio de data a server externo"});
-  /*************************************** */
 
   try {
-    const response = await fetch(query_base_url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Shopify-Access-Token": accessToken!
-      },
-      body: JSON.stringify({
-        query: query,
-        variables: variables// Initial request fetches first 10 products
-      })
-    });
-
-    if (response.ok) {
-
-      const data = await response.json()
-      // console.log(data, 'old_data')
-
-
-      const { data: { products } } = data;
-
-      //console.log(products, 'data__')
-      return {
-        products: products
-      }
-    }
-
-
-    return null
+    let resp = await dropiModelProducts.queryImportProducts(request, variables, 'products');
+    return resp
   } catch (err) {
     console.log(err)
   }
 };
 
-
-
 const Products = () => {
+
+  /** loader */
+  const [isLoading, setIsLoading] = useState(true);
+  /******************* */
+
   const loaderData = useLoaderData();
+  /** loader */
+  useEffect(() => {
+    if (loaderData) {
+      setIsLoading(false);
+    }
+  }, [loaderData]);
+  if (isLoading) {
+    // Mostrar el loader mientras se carga la consulta
+    return (
+      <Card>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }} >
+          <Spinner size="large" />
+        </div>
+      </Card>
+    );
+  }
+  /******************* */
 
   if (!loaderData || !loaderData.products) {
-    return <h2>No hay productos disponibles</h2>;
+    return (
+      <Card>
+        <h2>No hay productos disponibles, favor importar o recargar la página</h2>
+      </Card>
+    );
   }
 
-  const { products } = useLoaderData();
+  const { products } = loaderData;
 
-    // console.log(products, 'products')
+  console.log(products, "products")
 
   // Mapear los productos para crear las filas de la tabla
   const rows = products.nodes.map(product => {
@@ -137,62 +83,62 @@ const Products = () => {
     };
   });
 
-  console.log(rows, 'rowss')
-
-
-
 
   return (
-    <Card>
-      <h1>Productos</h1>
-            <DataTable
-        columnContentTypes={['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text']}
-        headings={['Disponible a venta', 'Imagen', 'Nombre', 'SKU', 'Stock', 'price', 'Categoria', 'Descripción', 'ID']}
-        rows={rows.map((product: any) => [
-          <input
-            type="checkbox"
-          // onChange={() => handleCheckboxChange(product.id)}
-          // checked={selectedItems.includes(product.id)}
-          />,
+    <div>
+      <Card>
+        <h1>Productos</h1>
+        <DataTable
+          columnContentTypes={['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text']}
+          headings={['Disponible a venta', 'Imagen', 'Nombre', 'SKU', 'Stock', 'price', 'Categoria', 'Descripción', 'ID']}
+          rows={rows.map((product: any) => [
+            <input
+              type="checkbox"
+            />,
 
-          <div>
-            <Thumbnail source={product.imageSrc} alt={product.title} size="large" />
-          </div>,
-          <div>{product.title}</div>,
-          <div>{product.sku}</div>,
-          <div>{product.stock}</div>,
-          <div>{product.price}</div>,
-          <div>{product.category}</div>,
-          <div
-            style={{
-              maxHeight: '100px',
-              overflow: 'auto',
-              padding: '5px',
-              whiteSpace: 'normal',
-            }}
-          >{product.description}</div>,
-          <div>{product.id}</div>,
-        ])}
-      />
+            <div>
+              <Thumbnail source={product.imageSrc} alt={product.title} size="large" />
+            </div>,
+            <div>{product.title}</div>,
+            <div>{product.sku}</div>,
+            <div>{product.stock}</div>,
+            <div>{product.price}</div>,
+            <div>{product.category}</div>,
+            <div
+              style={{
+                maxHeight: '100px',
+                overflow: 'auto',
+                padding: '5px',
+                whiteSpace: 'normal',
+              }}
+            >{product.description}</div>,
+            <div>{product.id}</div>,
+          ])}
+        />
 
-      <Pagination connection={products}>
-        {({ NextLink, PreviousLink, isLoading }) => (
-          <>
-            <PreviousLink>
-              <Button disabled={isLoading} outline>
-                {isLoading ? 'Cargando...' : '<'}
-              </Button>
-            </PreviousLink>
-            <NextLink>
-              <Button disabled={isLoading} outline>
-                {isLoading ? 'Cargando...' : '>'}
-              </Button>
-            </NextLink>
-          </>
-        )}
-      </Pagination>
+        <Pagination connection={products}>
+          {({ NextLink, PreviousLink, isLoading }) => (
+            <>
+              <PreviousLink>
+                <Button disabled={isLoading} outline>
+                  {isLoading ? 'Cargando...' : '<'}
+                </Button>
+              </PreviousLink>
+              <NextLink>
+                <Button disabled={isLoading} outline>
+                  {isLoading ? 'Cargando...' : '>'}
+                </Button>
+              </NextLink>
+            </>
+          )}
+        </Pagination>
 
-    </Card>
+      </Card>
+
+
+
+    </div>
+
   );
 };
 
