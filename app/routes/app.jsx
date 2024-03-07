@@ -21,7 +21,7 @@ export default function App() {
           Home
         </Link>
         <Link to="/app/additional">Additional page</Link>
-		<Link to="/app/products_v2">Productos importados</Link>
+		<Link to="/app/products_view">Productos importados</Link>
 	    <Link to="/app/orders_view">Todas las ordenes</Link>
       </ui-nav-menu>
       <Outlet />
