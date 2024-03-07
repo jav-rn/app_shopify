@@ -1,6 +1,6 @@
 import { authenticate, apiVersion } from "../shopify.server";
 import db from "../db.server";
-import { _DropiServices } from "../../stock_ago_services/dropi.services";
+import { _DropiServices } from "../../_services/dropi.services";
 // https://community.shopify.com/c/shopify-apps/you-do-not-have-permission-to-create-webhooks-with-orders-create/m-p/1919485
 
 

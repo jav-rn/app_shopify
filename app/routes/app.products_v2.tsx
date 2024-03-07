@@ -3,10 +3,7 @@ import { useLoaderData, Link } from "@remix-run/react";
 import { Card, Layout, List, Page, DataTable, Thumbnail, useIndexResourceState, Button, TextField } from "@shopify/polaris";
 import { getPaginationVariables, Pagination } from '@shopify/hydrogen';
 import { apiVersion, authenticate } from "~/shopify.server";
-import { useState } from "react";
-import { useLocation } from "react-router-dom";
-import { json } from '@shopify/remix-oxygen';
-import { _DropiServices } from "stock_ago_services/dropi.services";
+import { _DropiServices } from "_services/dropi.services";
 
 const ITEMS_PER_PAGE = 10;
 export const query = `
