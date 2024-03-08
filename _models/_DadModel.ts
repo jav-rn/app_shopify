@@ -25,13 +25,15 @@ export class _DadModel {
 
   protected async executeGraphQLAdmin(request: any, query: any, variables: any, extractName: string) {
     const { admin } = await authenticate.admin(request);
-    const response  = await admin.graphql(
+    const response = await admin.graphql(
       query,
       {
         variables: variables
       },
     );
-    return await this.cleanResult(response, extractName)
+    let resp = await this.cleanResult(response, extractName)
+    //console.log('respons------>', resp);
+    return resp;
   }
 
   protected async executeGraphQLAdminV2(admin: any, query: any, variables: any, extractName: string) {
@@ -50,6 +52,7 @@ export class _DadModel {
 
   private async cleanResult(response: any, extractName: any) {
     const responseJson = await response.json();
+    if (!response) return null;
     if (response.ok) {
       const { data: { [extractName]: dynamicData } } = responseJson;
       let resp: { [key: string]: any } = {};

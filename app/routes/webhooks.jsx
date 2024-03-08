@@ -2,7 +2,7 @@ import { authenticate, apiVersion } from "../shopify.server";
 import db from "../db.server";
 import { _DropiServices } from "../../_services/dropi.services";
 // https://community.shopify.com/c/shopify-apps/you-do-not-have-permission-to-create-webhooks-with-orders-create/m-p/1919485
-
+// https://community.shopify.com/c/webhooks-and-events/order-created-webhooks-not-received/m-p/1125646
 
 const query = `
 query OrderQuery($orderId: ID!) {

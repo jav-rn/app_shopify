@@ -111,9 +111,14 @@ export class _DropiServices {
     }
   }
 
-
-
-
-
+  console_msg(topic: any, end = true) {
+    if(end){
+      console.log("< END >")
+      console.log("<--------------" + topic + "-------------->")
+    }else{
+      console.log("<--------------" + topic + "-------------->")
+      console.log("< INI >")
+    }
+  }
 
 }
