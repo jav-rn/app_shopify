@@ -46,7 +46,12 @@ export class _DadModel {
     return await this.cleanResult(response, extractName)
   }
 
-  protected parseIntId(data: any, key: string) {
+  public getToken(session : any){
+    const {  accessToken } = session;
+    return accessToken;
+  }
+
+  public parseIntId(data: any, key: string) {
     return data[key].id.split('/').pop();
   }
 

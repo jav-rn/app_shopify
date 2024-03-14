@@ -2,7 +2,7 @@
 
 client_id = "43dd49cffb45682dddc07c4fa6687663"
 name = "dropicon"
-application_url = "https://ranks-hunger-circulation-younger.trycloudflare.com"
+application_url = "https://idol-pressed-ceiling-terminals.trycloudflare.com"
 embedded = true
 
 [build]
@@ -16,9 +16,9 @@ scopes = "read_customers,read_draft_orders,read_locales,read_locations,read_mark
 
 [auth]
 redirect_urls = [
-  "https://ranks-hunger-circulation-younger.trycloudflare.com/auth/callback",
-  "https://ranks-hunger-circulation-younger.trycloudflare.com/auth/shopify/callback",
-  "https://ranks-hunger-circulation-younger.trycloudflare.com/api/auth/callback"
+  "https://idol-pressed-ceiling-terminals.trycloudflare.com/auth/callback",
+  "https://idol-pressed-ceiling-terminals.trycloudflare.com/auth/shopify/callback",
+  "https://idol-pressed-ceiling-terminals.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

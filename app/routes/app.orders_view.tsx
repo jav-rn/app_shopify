@@ -1,6 +1,6 @@
 import type { LoaderFunction } from "@remix-run/node";
 import { useLoaderData, Link } from "@remix-run/react";
-import { Card, Layout, List, Page, DataTable, Thumbnail, useIndexResourceState, Button, TextField } from "@shopify/polaris";
+import { Card, Layout, List, Page, DataTable, Thumbnail, useIndexResourceState, Button, TextField,    Banner } from "@shopify/polaris";
 import { getPaginationVariables, Pagination } from '@shopify/hydrogen';
 import { apiVersion, authenticate } from "~/shopify.server";
 import { useState } from "react";

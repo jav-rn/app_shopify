@@ -1,39 +1,18 @@
 import { authenticate, apiVersion } from "../shopify.server";
 import db from "../db.server";
 import { _DropiServices } from "../../_services/dropi.services";
+import { _DropiModelOrder } from "../../_models/_DropiModelOrder";
+import { _DropiModelShop } from "../../_models/_DropiModelShop";
 // https://community.shopify.com/c/shopify-apps/you-do-not-have-permission-to-create-webhooks-with-orders-create/m-p/1919485
-// https://community.shopify.com/c/webhooks-and-events/order-created-webhooks-not-received/m-p/1125646
 
-const query = `
-query OrderQuery($orderId: ID!) {
-  order(id: $orderId) {
-    id
-    name
-    createdAt
-    lineItems(first: 250) {
-      edges {
-        node {
-          id
-          title
-          sku
-          variant {
-            product {
-              id
-              title
-           
-            }
-          }
-        }
-      }
-    }
-  }
-}
-`;
+
 
 const dropiServices = new _DropiServices();
+const dropiModelOrder = new _DropiModelOrder();
+const dropiModelShop = new _DropiModelShop();
 
 export const action = async ({ request }) => {
-  //const orderServives = new _OrderServives(); 
+
   const { topic, shop, session, admin, payload } =
     await authenticate.webhook(request);
 
@@ -42,80 +21,92 @@ export const action = async ({ request }) => {
     throw new Response();
   }
 
+
+  let send_payload = {};
+  let result = {};
+  let variables = {};
+
+  send_payload = {
+    "webhook": topic,
+    "webhook_origin_payload": payload,
+  }
   switch (topic) {
     case "APP_UNINSTALLED":
       if (session) {
         await db.session.deleteMany({ where: { shop } });
       }
       break;
-    case "ORDER_TRANSACTIONS_CREATE":
-      console.log("<-----se creo orden ORDER_TRANSACTIONS_CREATE DDDDDDD------>");
 
-      // "gid://shopify/Order/5524261765318"
-      // const orderId = payload.id;  o payload.admin_graphql_api_id
+      case "ORDERS_CREATE":
+        dropiServices.console_msg(topic, 0)
+        console.log(send_payload)
+        dropiServices.SEND_ORDERS_CREATE(send_payload);
+        dropiServices.console_msg(topic)
+        break;
 
-
-      const variables = { orderId: "gid://shopify/Order/"+payload.order_id };
-      console.log( "variables____>",variables);
-      const { shop, accessToken } = session
-      const response = await fetch(`https://${shop}/admin/api/${apiVersion}/graphql.json`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Shopify-Access-Token": accessToken
-        },
-        body: JSON.stringify({
-          query,
-          variables
-        })
-      });
-      console.log("p2");
-
-      if (response.ok) {
-        console.log("p3");
-        const data = await response.json();
-        console.log("Respuesta de la consulta GraphQL:", data);
-        console.log(payload)
-        console.log("products_order", data)
-        dropiServices.SEND_ORDER_TRANSACTIONS_CREATE({ "webhook_ORDER_TRANSACTIONS_CREATE_body": payload, "products": data });
-        // Aquí puedes realizar las acciones necesarias con la información obtenida
-        // dropiServices.SEND_ORDER_TRANSACTIONS_CREATE(data);
-      }
-      console.log("p4");
-
-      console.log("<-----end se creo orden ORDER_TRANSACTIONS_CREATE------>")
+    case "DRAFT_ORDERS_CREATE":
+      dropiServices.console_msg(topic, 0)
+      dropiServices.SEND_DRAFT_ORDERS_CREATE(send_payload)
+      console.log(send_payload)
+      dropiServices.console_msg(topic)
       break;
 
-    case "ORDERS_CREATE":
-      console.log("<-----se creo orden ORDERS_CREATE------>")
-      console.log(payload)
-      dropiServices.SEND_ORDERS_CREATE({ "webhook_ORDERS_CREATE_body": payload });
-      console.log("<-----end se creo orden ORDERS_CREATE------>")
+    case "ORDER_TRANSACTIONS_CREATE":
+      dropiServices.console_msg(topic, 0)
+      variables      = { orderId: "gid://shopify/Order/" + payload.order_id };
+      result.order   = await dropiModelOrder.queryProductByOrder(admin, variables, 'order')
+      result.shop    = await dropiModelShop.queryGetShop(session, variables, 'shop')
+      result.shop_id = dropiModelShop.parseIntId(result.shop, 'shop');
+
+      send_payload = {
+        "webhook": topic,
+        "webhook_origin_payload": payload,
+        "query_order": result.order,
+        "query_shop": { "shop_id": result.shop_id, "url": shop, "shop": result.shop }
+      }
+      console.log(send_payload)
+
+      dropiServices.console_msg(topic)
+
+      if (result.order) {
+        dropiServices.SEND_ORDER_TRANSACTIONS_CREATE(send_payload)
+      } else {
+        console.log("error al consultar order")
+      }
       break;
 
     case "ORDERS_EDITED":
-      console.log("<-----se creo orden_ORDERS_EDITED------>")
-      console.log(payload)
-      dropiServices.SEND_ORDERS_EDITED({ "webhook_ORDERS_EDITED_body": payload });
-      console.log("<-----end se creo orden------>")
+      dropiServices.console_msg(topic, 0)
+      console.log(send_payload)
+      dropiServices.SEND_ORDERS_EDITED(send_payload);
+      dropiServices.console_msg(topic)
+      break;
+    case "ORDERS_DELETE":
+      dropiServices.console_msg(topic, 0)
+      console.log(send_payload)
+      dropiServices.SEND_ORDERS_DELETE(send_payload);
+      dropiServices.console_msg(topic)
       break;
 
-    case "ORDERS_UPDATED":
-      console.log("<-----ORDERS_UPDATED------>")
-      dropiServices.SEND_ORDERS_UPDATED({ "webhook_ORDERS_UPDATED_create_body": payload });
-      console.log("<-----ORDERS_UPDATED------>")
-      break;
-
-    case "PRODUCTS_UPDATE":
-      console.log("<-----se edito producto------>")
-      dropiServices.SEND_PRODUCTS_UPDATE({ "webhook_PRODUCTS_UPDATE_body": payload });
-      console.log("<-----se edito producto------>")
+    case "ORDERS_CANCELLED":
+      dropiServices.console_msg(topic, 0)
+      console.log(send_payload)
+      dropiServices.SEND_ORDERS_EDITED(send_payload);
+      dropiServices.console_msg(topic)
       break;
 
     case "PRODUCTS_CREATE":
-      console.log("<-----se edito producto------>")
-      dropiServices.SEND_PRODUCTS_CREATE({ "webhook_PRODUCTS_CREATE_body": payload });
-      console.log("<-----se edito producto------>")
+      dropiServices.console_msg(topic, 0)
+      console.log(send_payload)
+      dropiServices.SEND_PRODUCTS_CREATE(send_payload);
+      dropiServices.console_msg(topic)
+      break;
+  
+    case "PRODUCTS_UPDATE":
+      dropiServices.console_msg(topic, 0)
+      console.log(send_payload)
+      dropiServices.SEND_PRODUCTS_UPDATE(send_payload);
+      dropiServices.console_msg(topic)
       break;
 
     case "CUSTOMERS_DATA_REQUEST":

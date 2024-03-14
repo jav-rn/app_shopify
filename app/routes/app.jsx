@@ -23,6 +23,7 @@ export default function App() {
         <Link to="/app/additional">Additional page</Link>
 		<Link to="/app/products_view">Productos importados</Link>
 	    <Link to="/app/orders_view">Todas las ordenes</Link>
+      <Link to="/app/alert_example">Alert</Link>
       </ui-nav-menu>
       <Outlet />
     </AppProvider>

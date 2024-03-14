@@ -1,6 +1,6 @@
 import { _DadModel } from "./_DadModel";
 
-export class _DropiModelProducts extends _DadModel {
+export class _DropiModelProduct extends _DadModel {
   async queryImportProducts(request: any, variables: any, extractName: string) {
     let query = `
     query AllProducts(

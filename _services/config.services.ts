@@ -1,9 +1,13 @@
+const base_url = "https://solucionesintegralesmallorca.com/portafoliojav/";
 export const routes = {
-    ORDER_TRANSACTIONS_CREATE : "https://solucionesintegralesmallorca.com/portafoliojav/test_stock_ago/", // OJO actualizar al endpoint de orders stockago
-    ORDERS_CREATE : "https://solucionesintegralesmallorca.com/portafoliojav/test_stock_ago/", // OJO actualizar al endpoint de orders stockago
-    ORDERS_EDITED : "https://solucionesintegralesmallorca.com/portafoliojav/test_stock_ago/", // OJO actualizar al endpoint de orders stockago
-    ORDERS_UPDATED : "https://solucionesintegralesmallorca.com/portafoliojav/test_stock_ago/", // OJO actualizar al endpoint de orders stockago
-    PRODUCTS_UPDATE : "https://solucionesintegralesmallorca.com/portafoliojav/test_stock_ago/", // OJO actualizar al endpoint de orders stockago
-    PRODUCTS_CREATE : "https://solucionesintegralesmallorca.com/portafoliojav/test_stock_ago/", // OJO actualizar al endpoint de orders stockago
+    DRAFT_ORDERS_CREATE       : base_url+"test_stock_ago/", // OJO actualizar al endpoint de orders stockago
+    ORDER_TRANSACTIONS_CREATE : base_url+"test_stock_ago/", // OJO actualizar al endpoint de orders stockago
+    ORDERS_CREATE             : base_url+"test_stock_ago/", // OJO actualizar al endpoint de orders stockago
+    ORDERS_EDITED             : base_url+"test_stock_ago/", // OJO actualizar al endpoint de orders stockago
+    ORDERS_UPDATED            : base_url+"test_stock_ago/", // OJO actualizar al endpoint de orders stockago
+    ORDERS_DELETE             : base_url+"test_stock_ago/", // OJO actualizar al endpoint de orders stockago
+    ORDERS_CANCELLED          : base_url+"test_stock_ago/", // OJO actualizar al endpoint de orders stockago
+    PRODUCTS_UPDATE           : base_url+"test_stock_ago/", // OJO actualizar al endpoint de orders stockago
+    PRODUCTS_CREATE           : base_url+"test_stock_ago/", // OJO actualizar al endpoint de orders stockago
     login : 'definir'
 }
