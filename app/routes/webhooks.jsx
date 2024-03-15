@@ -81,6 +81,7 @@ export const action = async ({ request }) => {
       dropiServices.SEND_ORDERS_EDITED(send_payload);
       dropiServices.console_msg(topic)
       break;
+      
     case "ORDERS_DELETE":
       dropiServices.console_msg(topic, 0)
       console.log(send_payload)
