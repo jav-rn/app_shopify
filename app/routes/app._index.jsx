@@ -107,7 +107,7 @@ export default function Index() {
           <Layout.Section>
             <BlockStack gap="500">
               <Text as="h1" variant="headingSm"> Paso 1: </Text>
-              Imporotar los productos desde app Dropify
+              Importar los productos desde app Dropify
               <Divider borderColor="border" />
               <Text as="h1" variant="headingSm">Paso 2: </Text>
               Validar que la conexión este establecida

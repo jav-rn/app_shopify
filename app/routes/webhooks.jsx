@@ -91,7 +91,7 @@ export const action = async ({ request }) => {
     case "ORDERS_CANCELLED":
       dropiServices.console_msg(topic, 0)
       console.log(send_payload)
-      dropiServices.SEND_ORDERS_EDITED(send_payload);
+      dropiServices.SEND_ORDERS_CANCELLED(send_payload);
       dropiServices.console_msg(topic)
       break;
 
