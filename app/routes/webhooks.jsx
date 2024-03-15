@@ -46,8 +46,8 @@ export const action = async ({ request }) => {
 
     case "DRAFT_ORDERS_CREATE":
       dropiServices.console_msg(topic, 0)
-      dropiServices.SEND_DRAFT_ORDERS_CREATE(send_payload)
       console.log(send_payload)
+      dropiServices.SEND_DRAFT_ORDERS_CREATE(send_payload)
       dropiServices.console_msg(topic)
       break;
 
@@ -81,7 +81,7 @@ export const action = async ({ request }) => {
       dropiServices.SEND_ORDERS_EDITED(send_payload);
       dropiServices.console_msg(topic)
       break;
-      
+
     case "ORDERS_DELETE":
       dropiServices.console_msg(topic, 0)
       console.log(send_payload)
