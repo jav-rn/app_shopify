@@ -21,8 +21,9 @@ export default function App() {
           Home
         </Link>
         <Link to="/app/additional">Additional page</Link>
-		<Link to="/app/products_view">Productos importados</Link>
-	    <Link to="/app/orders_view">Todas las ordenes</Link>
+        <Link to="/app/products_view">Productos importados</Link>
+        <Link to="/app/orders_view">Todas las ordenes</Link>
+        <Link to="/app/settings">Configuración</Link>
       </ui-nav-menu>
       <Outlet />
     </AppProvider>
