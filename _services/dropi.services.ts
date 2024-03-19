@@ -43,14 +43,18 @@ export class _DropiServices {
   }
 
   async SEND_ORDERS_CREATE(body: any): Promise<any> {
-    return await axios.post(this.endpoint.ORDERS_CREATE, {
-      body: body
-    }, {
-      headers: {
-        "Content-Type": "application/json",
-        "X-Shopify-Access-Token": this.accessToken!
-      }
-    });
+    try {
+      return await axios.post(this.endpoint.ORDERS_CREATE, {
+        body: body
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+          "X-Shopify-Access-Token": this.accessToken!
+        }
+      });
+    } catch (err) {
+      return err;
+    }
   }
 
   async SEND_ORDERS_EDITED(body: any): Promise<any> {

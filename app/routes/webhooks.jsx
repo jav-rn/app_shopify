@@ -40,7 +40,21 @@ export const action = async ({ request }) => {
       case "ORDERS_CREATE":
         dropiServices.console_msg(topic, 0)
         console.log(send_payload)
-        dropiServices.SEND_ORDERS_CREATE(send_payload);
+        result.response_stockago = await dropiServices.SEND_ORDERS_CREATE(send_payload);
+
+        if( result.response_stockago  && result.response_stockago.status){
+          // registrar log en db true y created_at
+        }else{
+          if(result.response_stockago){
+            // error en este sistema o server caido
+            // registrar log en db false y created_at
+          }else{
+            // no se creo el pedido en stockago 
+            // registrar log en db false y created_at
+          }
+        }
+
+        console.log('response_stockago',  result.response_stockago?.data || '')
         dropiServices.console_msg(topic)
         break;
 
