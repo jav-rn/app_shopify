@@ -155,4 +155,21 @@ export class _DropiServices {
     }
   }
 
+
+  async getproductsStockAgo(): Promise<any> {
+    return await axios.post(this.endpoint.receiveProducts, {
+      body: {
+        "user": "test",
+        "password": "password"
+      }
+    }, {
+      headers: {
+        "Content-Type": "application/json",
+        "X-Shopify-Access-Token": ""
+      }
+    });
+  }
+
+
+
 }

@@ -95,6 +95,81 @@ export class _DropiModelProduct extends _DadModel {
   }
 
   async queryCreateProduct(request: any, variables: any, extractName: any) {
+    console.log("llego a modelo");
+    let query =
+    `#graphql
+    mutation populateProduct($input: ProductInput!) {
+      productCreate(input: $input) {
+        product {
+          id
+          title
+          handle
+          status
+          variants(first: 10) {
+            edges {
+              node {
+                id
+                price
+                barcode
+                createdAt
+              }
+            }
+          }
+        }
+      }
+    }`
+    /*
+    let query =  `#graphql
+    mutation populateProduct($input: ProductInput!) {
+      productCreate(input: $input) {
+        product {
+          id
+          title
+          handle
+          status
+          variants(first: 10) {
+            edges {
+              node {
+                id
+                price
+                barcode
+                createdAt
+              }
+            }
+          }
+        }
+      }
+    }`
+    */
+    /*
+    let query =`
+    mutation populateProduct($input: ProductInput!) {
+      productCreate(input: $input) {
+        product {
+          id
+          title
+          handle
+          status
+          variants(first: 10) {
+            edges {
+              node {
+                id
+                price
+                sku
+                barcode
+                createdAt
+              }
+            }
+          }
+        }
+      }
+    }`
+    */
+    extractName = 'product';
+    let resp = await this.executeGraphQLAdminJson(request, query, variables, extractName)
+    console.log("resp mmm", resp)
+
+    /*
     let query = `
     query AllProducts(
       $first: Int
@@ -141,5 +216,9 @@ export class _DropiModelProduct extends _DadModel {
     }
     `;
     this.executeGraphQLAdmin(request, query, variables, extractName)
+    */
+
+    //this.executeGraphQLAdmin(request, query, variables, extractName)
+   return null; // aca es error
   }
 }

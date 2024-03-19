@@ -13,7 +13,7 @@ export const loader = async ({ request }) => {
 
 export default function App() {
   const { apiKey } = useLoaderData();
-
+//    <Link to="/app/products_import_view">Importar productos</Link>
   return (
     <AppProvider isEmbeddedApp apiKey={apiKey}>
       <ui-nav-menu>
@@ -24,6 +24,9 @@ export default function App() {
 		<Link to="/app/products_view">Productos importados</Link>
 	    <Link to="/app/orders_view">Todas las ordenes</Link>
       <Link to="/app/alert_example">Alert</Link>
+   
+      <Link to="/app/index_bk">Bk</Link>
+      
       </ui-nav-menu>
       <Outlet />
     </AppProvider>

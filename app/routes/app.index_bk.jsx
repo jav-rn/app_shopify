@@ -22,6 +22,7 @@ export const loader = async ({ request }) => {
 };
 
 export const action = async ({ request }) => {
+  console.log("entro a action");
   const { admin } = await authenticate.admin(request);
   const color = ["Red", "Orange", "Yellow", "Green"][
     Math.floor(Math.random() * 4)
@@ -80,6 +81,7 @@ export default function Index() {
       shopify.toast.show("Product created");
     }
   }, [productId]);
+  
   const generateProduct = () => submit({}, { replace: true, method: "POST" });
 
   return (

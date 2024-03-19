@@ -24,7 +24,7 @@ export class _DadModel {
   }
 
   protected async executeGraphQLAdmin(request: any, query: any, variables: any, extractName: string) {
-    const { admin } = await authenticate.admin(request);
+        const { admin } = await authenticate.admin(request);
     const response = await admin.graphql(
       query,
       {
@@ -34,6 +34,28 @@ export class _DadModel {
     let resp = await this.cleanResult(response, extractName)
     //console.log('respons------>', resp);
     return resp;
+
+  }
+
+
+  protected async executeGraphQLAdminJson(request: any, query: any, variables: any, extractName: string) {
+    console.log("llego a executeGraphQLAdminExecute");
+    const { admin } = await authenticate.admin(request);
+    const color = ["Red", "Orange", "Yellow", "Green"][
+      Math.floor(Math.random() * 4)
+    ];
+    const response = await admin.graphql(
+    query,
+      {
+        variables: variables
+      },
+    );
+    const responseJson = await response.json();
+    console.log('responseJson', responseJson.data)
+    return await responseJson;
+   // return responseJson;
+  
+
   }
 
   protected async executeGraphQLAdminV2(admin: any, query: any, variables: any, extractName: string) {
