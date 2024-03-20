@@ -39,7 +39,7 @@ export const action = async ({ request }) => {
 
       case "ORDERS_CREATE":
         dropiServices.console_msg(topic, 0)
-        console.log(send_payload)
+        // console.log(send_payload)
         result.response_stockago = await dropiServices.SEND_ORDERS_CREATE(send_payload);
 
         if( result.response_stockago  && result.response_stockago.status){
@@ -54,13 +54,13 @@ export const action = async ({ request }) => {
           }
         }
 
-        console.log('response_stockago',  result.response_stockago?.data || '')
+        // console.log('response_stockago',  result.response_stockago?.data || '')
         dropiServices.console_msg(topic)
         break;
 
     case "DRAFT_ORDERS_CREATE":
       dropiServices.console_msg(topic, 0)
-      console.log(send_payload)
+      // console.log(send_payload)
       dropiServices.SEND_DRAFT_ORDERS_CREATE(send_payload)
       dropiServices.console_msg(topic)
       break;
@@ -78,48 +78,48 @@ export const action = async ({ request }) => {
         "query_order": result.order,
         "query_shop": { "shop_id": result.shop_id, "url": shop, "shop": result.shop }
       }
-      console.log(send_payload)
+      // console.log(send_payload)
 
       dropiServices.console_msg(topic)
 
       if (result.order) {
         dropiServices.SEND_ORDER_TRANSACTIONS_CREATE(send_payload)
       } else {
-        console.log("error al consultar order")
+        // console.log("error al consultar order")
       }
       break;
 
     case "ORDERS_EDITED":
       dropiServices.console_msg(topic, 0)
-      console.log(send_payload)
+      // console.log(send_payload)
       dropiServices.SEND_ORDERS_EDITED(send_payload);
       dropiServices.console_msg(topic)
       break;
 
     case "ORDERS_DELETE":
       dropiServices.console_msg(topic, 0)
-      console.log(send_payload)
+      // console.log(send_payload)
       dropiServices.SEND_ORDERS_DELETE(send_payload);
       dropiServices.console_msg(topic)
       break;
 
     case "ORDERS_CANCELLED":
       dropiServices.console_msg(topic, 0)
-      console.log(send_payload)
+      // console.log(send_payload)
       dropiServices.SEND_ORDERS_CANCELLED(send_payload);
       dropiServices.console_msg(topic)
       break;
 
     case "PRODUCTS_CREATE":
       dropiServices.console_msg(topic, 0)
-      console.log(send_payload)
+      // console.log(send_payload)
       dropiServices.SEND_PRODUCTS_CREATE(send_payload);
       dropiServices.console_msg(topic)
       break;
   
     case "PRODUCTS_UPDATE":
       dropiServices.console_msg(topic, 0)
-      console.log(send_payload)
+      // console.log(send_payload)
       dropiServices.SEND_PRODUCTS_UPDATE(send_payload);
       dropiServices.console_msg(topic)
       break;

@@ -10,5 +10,6 @@ export const routes = {
     PRODUCTS_UPDATE           : base_url+"test_stock_ago/", // OJO actualizar al endpoint de orders stockago
     PRODUCTS_CREATE           : base_url+"test_stock_ago/", // OJO actualizar al endpoint de orders stockago
     login : 'definir',
-    receiveProducts           : base_url+"test_stock_ago_products/"
+    receiveProducts           : base_url+"test_stock_ago_products/",
+    TEST_URL                  : 'https://solucionesintegralesmallorca.com.error/portafoliojav/test_stock_ago/'
 }

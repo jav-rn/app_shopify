@@ -20,8 +20,6 @@
   },
   "type": "module",
   "dependencies": {
-     "@shopify/hydrogen": "^2024.1.1",
-	 "@shopify/remix-oxygen": "^2.0.3",
     "@prisma/client": "^5.8.0",
     "@remix-run/dev": "^2.7.1",
     "@remix-run/node": "^2.7.1",
@@ -29,16 +27,20 @@
     "@remix-run/serve": "^2.7.1",
     "@shopify/app": "3.56.3",
     "@shopify/cli": "3.56.3",
+    "@shopify/hydrogen": "^2024.1.1",
     "@shopify/polaris": "^12.0.0",
+    "@shopify/remix-oxygen": "^2.0.3",
     "@shopify/shopify-api": "^9.2.0",
     "@shopify/shopify-app-remix": "^2.5.0",
     "@shopify/shopify-app-session-storage-prisma": "^4.0.1",
+    "axios": "^1.6.7",
+    "firebase": "^10.9.0",
+    "firebase-admin": "^12.0.0",
     "isbot": "^5.1.0",
     "prisma": "^5.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "vite-tsconfig-paths": "^4.3.1",
-	"axios": "^1.6.7"
+    "vite-tsconfig-paths": "^4.3.1"
   },
   "devDependencies": {
     "@remix-run/eslint-config": "^2.7.1",

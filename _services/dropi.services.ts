@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { routes } from './config.services';
+import { storeOrders } from './manage-order-fails.service';
 
 
 export class _DropiServices {
@@ -43,8 +44,9 @@ export class _DropiServices {
   }
 
   async SEND_ORDERS_CREATE(body: any): Promise<any> {
+    let err = true;
     try {
-      return await axios.post(this.endpoint.ORDERS_CREATE, {
+      const response = await axios.post(this.endpoint.TEST_URL, {
         body: body
       }, {
         headers: {
@@ -52,9 +54,20 @@ export class _DropiServices {
           "X-Shopify-Access-Token": this.accessToken!
         }
       });
+
+      if (response.data.status) {
+        err = false;
+      }
+
     } catch (err) {
-      return err;
+      console.log(err)
     }
+
+    if (err) {
+      // Store the order(s) for trying later
+      await storeOrders(body);
+    }
+
   }
 
   async SEND_ORDERS_EDITED(body: any): Promise<any> {
