@@ -41,7 +41,9 @@ export const action = async ({ request }) => {
         dropiServices.console_msg(topic, 0)
         console.log(send_payload)
         result.response_stockago = await dropiServices.SEND_ORDERS_CREATE(send_payload);
+        console.log('response_stockago',  result.response_stockago?.data || '')
 
+      /*
         if( result.response_stockago  && result.response_stockago.status){
           // registrar log en db true y created_at
         }else{
@@ -53,8 +55,10 @@ export const action = async ({ request }) => {
             // registrar log en db false y created_at
           }
         }
-
         console.log('response_stockago',  result.response_stockago?.data || '')
+        */
+
+
         dropiServices.console_msg(topic)
         break;
 

@@ -44,6 +44,7 @@ export class _DropiServices {
 
   async SEND_ORDERS_CREATE(body: any): Promise<any> {
     try {
+      console.log("url--->>>>", this.endpoint.ORDERS_CREATE)
       return await axios.post(this.endpoint.ORDERS_CREATE, {
         body: body
       }, {
