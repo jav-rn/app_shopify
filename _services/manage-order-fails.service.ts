@@ -1,12 +1,14 @@
 import { collection, getDocs } from 'firebase/firestore/lite'
+import { doc, setDoc } from 'firebase/firestore'
 import { getDatabase, ref, set } from "firebase/database";
 
 import db from '../app/utils/firebase.server'
 
 export async function storeOrders (order) {
     // Store a order in case of fail in Stockago submission
-    const db = getDatabase()
-    set(ref(db, 'orders'), {
+    const orderRef = doc(db, 'orders', order['webhook_origin_payload']['id'] + '');
+
+    await setDoc(orderRef, {
         content: JSON.stringify(order),
         last_tried: new Date(),
         uploaded_at: new Date()
