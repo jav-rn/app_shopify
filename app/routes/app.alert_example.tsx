@@ -12,13 +12,15 @@ import {
   import { apiVersion, authenticate } from "~/shopify.server";
   import logoDropi from "../../public/avatar.png";
 
+  import { getAllOrders } from '../../_services/manage-order-fails.service';
+
 
 
 
   export const loader: LoaderFunction = async ({ request }) => {
     const { session } = await authenticate.admin(request)
   
-  
+    //getAllOrders()
     try {
       return {}
     } catch (err) {

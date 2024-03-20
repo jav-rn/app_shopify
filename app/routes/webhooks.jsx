@@ -37,43 +37,11 @@ export const action = async ({ request }) => {
       }
       break;
 
-      case "ORDERS_CREATE":
-        dropiServices.console_msg(topic, 0)
-        console.log(send_payload)
-        result.response_stockago = await dropiServices.SEND_ORDERS_CREATE(send_payload);
-        console.log('response_stockago',  result.response_stockago?.data || '')
-
-      /*
-        if( result.response_stockago  && result.response_stockago.status){
-          // registrar log en db true y created_at
-        }else{
-          if(result.response_stockago){
-            // error en este sistema o server caido
-            // registrar log en db false y created_at
-          }else{
-            // no se creo el pedido en stockago 
-            // registrar log en db false y created_at
-          }
-        }
-        console.log('response_stockago',  result.response_stockago?.data || '')
-        */
-
-
-        dropiServices.console_msg(topic)
-        break;
-
-    case "DRAFT_ORDERS_CREATE":
+    case "ORDERS_CREATE":
       dropiServices.console_msg(topic, 0)
-      console.log(send_payload)
-      dropiServices.SEND_DRAFT_ORDERS_CREATE(send_payload)
-      dropiServices.console_msg(topic)
-      break;
-
-    case "ORDER_TRANSACTIONS_CREATE":
-      dropiServices.console_msg(topic, 0)
-      variables      = { orderId: "gid://shopify/Order/" + payload.order_id };
-      result.order   = await dropiModelOrder.queryProductByOrder(admin, variables, 'order')
-      result.shop    = await dropiModelShop.queryGetShop(session, variables, 'shop')
+      variables = { orderId: "gid://shopify/Order/" + payload.id };
+      result.order = await dropiModelOrder.queryProductByOrder(admin, variables, 'order')
+      result.shop = await dropiModelShop.queryGetShop(session, variables, 'shop')
       result.shop_id = dropiModelShop.parseIntId(result.shop, 'shop');
 
       send_payload = {
@@ -82,48 +50,73 @@ export const action = async ({ request }) => {
         "query_order": result.order,
         "query_shop": { "shop_id": result.shop_id, "url": shop, "shop": result.shop }
       }
-      console.log(send_payload)
+
+      result.response_stockago = await dropiServices.SEND_ORDERS_CREATE(send_payload);
+      dropiServices.console_msg(topic)
+      break;
+
+    case "DRAFT_ORDERS_CREATE":
+      dropiServices.console_msg(topic, 0)
+      // console.log(send_payload)
+      dropiServices.SEND_DRAFT_ORDERS_CREATE(send_payload)
+      dropiServices.console_msg(topic)
+      break;
+
+    case "ORDER_TRANSACTIONS_CREATE":
+      dropiServices.console_msg(topic, 0)
+      variables = { orderId: "gid://shopify/Order/" + payload.order_id };
+      result.order = await dropiModelOrder.queryProductByOrder(admin, variables, 'order')
+      result.shop = await dropiModelShop.queryGetShop(session, variables, 'shop')
+      result.shop_id = dropiModelShop.parseIntId(result.shop, 'shop');
+
+      send_payload = {
+        "webhook": topic,
+        "webhook_origin_payload": payload,
+        "query_order": result.order,
+        "query_shop": { "shop_id": result.shop_id, "url": shop, "shop": result.shop }
+      }
+      // console.log(send_payload)
 
       dropiServices.console_msg(topic)
 
       if (result.order) {
         dropiServices.SEND_ORDER_TRANSACTIONS_CREATE(send_payload)
       } else {
-        console.log("error al consultar order")
+        // console.log("error al consultar order")
       }
       break;
 
     case "ORDERS_EDITED":
       dropiServices.console_msg(topic, 0)
-      console.log(send_payload)
+      // console.log(send_payload)
       dropiServices.SEND_ORDERS_EDITED(send_payload);
       dropiServices.console_msg(topic)
       break;
 
     case "ORDERS_DELETE":
       dropiServices.console_msg(topic, 0)
-      console.log(send_payload)
+      // console.log(send_payload)
       dropiServices.SEND_ORDERS_DELETE(send_payload);
       dropiServices.console_msg(topic)
       break;
 
     case "ORDERS_CANCELLED":
       dropiServices.console_msg(topic, 0)
-      console.log(send_payload)
+      // console.log(send_payload)
       dropiServices.SEND_ORDERS_CANCELLED(send_payload);
       dropiServices.console_msg(topic)
       break;
 
     case "PRODUCTS_CREATE":
       dropiServices.console_msg(topic, 0)
-      console.log(send_payload)
+      // console.log(send_payload)
       dropiServices.SEND_PRODUCTS_CREATE(send_payload);
       dropiServices.console_msg(topic)
       break;
-  
+
     case "PRODUCTS_UPDATE":
       dropiServices.console_msg(topic, 0)
-      console.log(send_payload)
+      // console.log(send_payload)
       dropiServices.SEND_PRODUCTS_UPDATE(send_payload);
       dropiServices.console_msg(topic)
       break;

@@ -2,7 +2,7 @@
 
 client_id = "43dd49cffb45682dddc07c4fa6687663"
 name = "dropicon"
-application_url = "https://along-win-perhaps-cradle.trycloudflare.com"
+application_url = "https://colours-pod-current-procedure.trycloudflare.com"
 embedded = true
 
 [build]
@@ -16,9 +16,9 @@ scopes = "read_customers,read_draft_orders,read_locales,read_locations,read_mark
 
 [auth]
 redirect_urls = [
-  "https://along-win-perhaps-cradle.trycloudflare.com/auth/callback",
-  "https://along-win-perhaps-cradle.trycloudflare.com/auth/shopify/callback",
-  "https://along-win-perhaps-cradle.trycloudflare.com/api/auth/callback"
+  "https://colours-pod-current-procedure.trycloudflare.com/auth/callback",
+  "https://colours-pod-current-procedure.trycloudflare.com/auth/shopify/callback",
+  "https://colours-pod-current-procedure.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

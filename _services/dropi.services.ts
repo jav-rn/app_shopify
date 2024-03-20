@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { routes } from './config.services';
+import { storeOrders } from './manage-order-fails.service';
 
 
 export class _DropiServices {
@@ -8,123 +9,144 @@ export class _DropiServices {
   private accessToken: any
   private endpoint: any
   private headers: any
+  private auth_user: any
+  private auth_token: any
 
   constructor() {
     this.accessToken = ''; // Este debe consultar el endpoint de login
     this.endpoint = routes
-    this.headers = {
-      headers: {
-        "Content-Type": "application/json",
-        "X-Shopify-Access-Token": this.get_token
-      }
-    }
+    this.auth_user = process.env.AUTH_USER;
+    this.auth_token = process.env.AUTH_TOKEN;
   }
 
   async SEND_DRAFT_ORDERS_CREATE(body: any): Promise<any> {
     return await axios.post(this.endpoint.DRAFT_ORDERS_CREATE, {
-      body: body
+      body
     }, {
       headers: {
         "Content-Type": "application/json",
-        "X-Shopify-Access-Token": this.accessToken!
+        "Auth-user": this.auth_user,
+        "Auth-token": this.auth_token
       }
     });
   }
 
   async SEND_ORDER_TRANSACTIONS_CREATE(body: any): Promise<any> {
     return await axios.post(this.endpoint.ORDER_TRANSACTIONS_CREATE, {
-      body: body
+      body
     }, {
       headers: {
         "Content-Type": "application/json",
-        "X-Shopify-Access-Token": this.accessToken!
+        "Auth-user": this.auth_user,
+        "Auth-token": this.auth_token
       }
     });
   }
 
   async SEND_ORDERS_CREATE(body: any): Promise<any> {
+    let err = true;
     try {
-      console.log("url--->>>>", this.endpoint.ORDERS_CREATE)
-      return await axios.post(this.endpoint.ORDERS_CREATE, {
-        body: body
-      }, {
-        headers: {
-          "Content-Type": "application/json",
-          "X-Shopify-Access-Token": this.accessToken!
-        }
-      });
+      console.log('url-->>', this.endpoint.base_url_local)
+      const response = await axios.post(this.endpoint.TEST_URL,
+        body
+        , {
+          headers: {
+            "Content-Type": "application/json",
+            "Auth-user": this.auth_user,
+            "Auth-token": this.auth_token
+          }
+        });
+
+      if (response.data.status) {
+        console.log(response)
+        err = false;
+      }
+
     } catch (err) {
-      return err;
+      console.log(err)
     }
+
+    if (err) {
+      // Store the order(s) for trying later
+      let resp = await storeOrders(body);
+      console.log("response from storeOrders ------>>>>>", resp)
+    }
+
   }
 
   async SEND_ORDERS_EDITED(body: any): Promise<any> {
-    return await axios.post(this.endpoint.ORDERS_DELETE, {
-      body: body
-    }, {
-      headers: {
-        "Content-Type": "application/json",
-        "X-Shopify-Access-Token": this.accessToken!
-      }
-    });
+    return await axios.post(this.endpoint.ORDERS_DELETE,
+      body
+      , {
+        headers: {
+          "Content-Type": "application/json",
+          "Auth-user": this.auth_user,
+          "Auth-token": this.auth_token
+        }
+      });
   }
 
 
   async SEND_ORDERS_CANCELLED(body: any): Promise<any> {
-    return await axios.post(this.endpoint.ORDERS_CANCELLED, {
-      body: body
-    }, {
-      headers: {
-        "Content-Type": "application/json",
-        "X-Shopify-Access-Token": this.accessToken!
-      }
-    });
+    return await axios.post(this.endpoint.ORDERS_CANCELLED,
+      body
+      , {
+        headers: {
+          "Content-Type": "application/json",
+          "Auth-user": this.auth_user,
+          "Auth-token": this.auth_token
+        }
+      });
   }
 
   async SEND_ORDERS_DELETE(body: any): Promise<any> {
-    return await axios.post(this.endpoint.ORDERS_DELETE, {
-      body: body
-    }, {
-      headers: {
-        "Content-Type": "application/json",
-        "X-Shopify-Access-Token": this.accessToken!
-      }
-    });
+    return await axios.post(this.endpoint.ORDERS_DELETE,
+      body
+      , {
+        headers: {
+          "Content-Type": "application/json",
+          "Auth-user": this.auth_user,
+          "Auth-token": this.auth_token
+        }
+      });
   }
 
   async SEND_ORDERS_UPDATED(body: any): Promise<any> {
-    return await axios.post(this.endpoint.ORDERS_UPDATED, {
-      body: body
-    }, {
-      headers: {
-        "Content-Type": "application/json",
-        "X-Shopify-Access-Token": this.accessToken!
-      }
-    });
+    return await axios.post(this.endpoint.ORDERS_UPDATED,
+      body
+      , {
+        headers: {
+          "Content-Type": "application/json",
+          "Auth-user": this.auth_user,
+          "Auth-token": this.auth_token
+        }
+      });
   }
 
 
   async SEND_PRODUCTS_UPDATE(body: any): Promise<any> {
-    return await axios.post(this.endpoint.PRODUCTS_UPDATE, {
-      body: body
-    }, {
-      headers: {
-        "Content-Type": "application/json",
-        "X-Shopify-Access-Token": this.accessToken!
-      }
-    });
+    return await axios.post(this.endpoint.PRODUCTS_UPDATE,
+      body
+      , {
+        headers: {
+          "Content-Type": "application/json",
+          "Auth-user": this.auth_user,
+          "Auth-token": this.auth_token
+        }
+      });
   }
 
 
   async SEND_PRODUCTS_CREATE(body: any): Promise<any> {
-    return await axios.post(this.endpoint.PRODUCTS_CREATE, {
-      body: body
-    }, {
-      headers: {
-        "Content-Type": "application/json",
-        "X-Shopify-Access-Token": this.accessToken!
-      }
-    });
+    return await axios.post(this.endpoint.PRODUCTS_CREATE,
+      body
+      , {
+        headers: {
+          "Content-Type": "application/json",
+          "Auth-user": this.auth_user,
+          "Auth-token": this.auth_token
+        }
+      });
   }
 
   async login(): Promise<any> {
@@ -136,7 +158,8 @@ export class _DropiServices {
     }, {
       headers: {
         "Content-Type": "application/json",
-        "X-Shopify-Access-Token": ""
+        "Auth-user": this.auth_user,
+        "Auth-token": this.auth_token
       }
     });
   }
