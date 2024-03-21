@@ -20,27 +20,27 @@ export class _DropiServices {
   }
 
   async SEND_DRAFT_ORDERS_CREATE(body: any): Promise<any> {
-    return await axios.post(this.endpoint.DRAFT_ORDERS_CREATE, {
+    return await axios.post(this.endpoint.DRAFT_ORDERS_CREATE,
       body
-    }, {
-      headers: {
-        "Content-Type": "application/json",
-        "Auth-user": this.auth_user,
-        "Auth-token": this.auth_token
-      }
-    });
+      , {
+        headers: {
+          "Content-Type": "application/json",
+          "Auth-user": this.auth_user,
+          "Auth-token": this.auth_token
+        }
+      });
   }
 
   async SEND_ORDER_TRANSACTIONS_CREATE(body: any): Promise<any> {
-    return await axios.post(this.endpoint.ORDER_TRANSACTIONS_CREATE, {
+    return await axios.post(this.endpoint.ORDER_TRANSACTIONS_CREATE,
       body
-    }, {
-      headers: {
-        "Content-Type": "application/json",
-        "Auth-user": this.auth_user,
-        "Auth-token": this.auth_token
-      }
-    });
+      , {
+        headers: {
+          "Content-Type": "application/json",
+          "Auth-user": this.auth_user,
+          "Auth-token": this.auth_token
+        }
+      });
   }
 
   async SEND_ORDERS_CREATE(body: any): Promise<any> {
