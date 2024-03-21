@@ -77,7 +77,7 @@ export const action = async ({ request }) => {
       }
       // console.log(send_payload)
 
-      dropiServices.console_msg(topic)
+      //dropiServices.console_msg(topic)
 
       if (result.order) {
         dropiServices.SEND_ORDER_TRANSACTIONS_CREATE(send_payload)

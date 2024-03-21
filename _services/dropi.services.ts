@@ -58,7 +58,7 @@ export class _DropiServices {
         });
 
       if (response.data.status) {
-        console.log(response)
+        console.log(response.data)
         err = false;
       }
 
