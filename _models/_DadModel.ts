@@ -53,9 +53,6 @@ export class _DadModel {
     const responseJson = await response.json();
     console.log('responseJson', responseJson.data)
     return await responseJson;
-   // return responseJson;
-  
-
   }
 
   protected async executeGraphQLAdminV2(admin: any, query: any, variables: any, extractName: string) {

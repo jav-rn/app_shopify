@@ -8,16 +8,17 @@ const  base_url = [
 let envNumber = 0;
 
 export const routes = {
+    ORDERS_CREATE             : base_url[envNumber]+"api/orders/create_shopify/",
+    login                     : base_url[envNumber]+"api/login-api/",
+
     DRAFT_ORDERS_CREATE       : base_url[envNumber]+"test_stock_ago/",
     ORDER_TRANSACTIONS_CREATE : base_url[envNumber]+"test_stock_ago/", 
-    ORDERS_CREATE             : base_url[envNumber]+"api/orders/create_shopify/",
     ORDERS_EDITED             : base_url[envNumber]+"test_stock_ago/", 
     ORDERS_UPDATED            : base_url[envNumber]+"test_stock_ago/", 
     ORDERS_DELETE             : base_url[envNumber]+"test_stock_ago/", 
     ORDERS_CANCELLED          : base_url[envNumber]+"test_stock_ago/", 
     PRODUCTS_UPDATE           : base_url[envNumber]+"test_stock_ago/", 
     PRODUCTS_CREATE           : base_url[envNumber]+"test_stock_ago/",
-    login                     : base_url[envNumber]+"api/login-api/",
     receiveProducts           : base_url[envNumber]+"test_stock_ago_products/",
     TEST_URL                  : 'https://solucionesintegralesmallorca.com/portafoliojav/test_stock_ago/'
 }
