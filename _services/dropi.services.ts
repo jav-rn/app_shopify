@@ -1,7 +1,17 @@
 import axios from 'axios';
 import { routes } from './config.services';
-import { storeOrders } from './manage-order-fails.service';
+import { storeOrders, getAllOrders } from './manage-order-fails.service';
 
+export interface ShopifyOrderPayload {
+  // TODO fill with current properties
+  webhook_origin_payload: {
+      id: string
+  }
+}
+
+interface OrderDTO {
+  // TODO fill interface
+}
 
 export class _DropiServices {
   public url_order_create: any
@@ -44,34 +54,33 @@ export class _DropiServices {
   }
 
   async SEND_ORDERS_CREATE(body: any): Promise<any> {
-    let err = true;
-    try {
-      console.log('url-->>', this.endpoint.base_url_local)
-      const response = await axios.post(this.endpoint.TEST_URL,
-        body
-        , {
-          headers: {
-            "Content-Type": "application/json",
-            "Auth-user": this.auth_user,
-            "Auth-token": this.auth_token
-          }
-        });
+    // let err = true;
+    // try {
+    //   console.log('url-->>', this.endpoint.base_url_local)
+    //   const response = await axios.post(this.endpoint.TEST_URL,
+    //     body
+    //     , {
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         "Auth-user": this.auth_user,
+    //         "Auth-token": this.auth_token
+    //       }
+    //     });
 
-      if (response.data.status) {
-        console.log(response)
-        err = false;
-      }
+    //   if (response.data.status) {
+    //     console.log(response)
+    //     err = false;
+    //   }
 
-    } catch (err) {
-      console.log(err)
-    }
+    // } catch (err) {
+    //   console.log(err)
+    // }
 
-    if (err) {
-      // Store the order(s) for trying later
-      let resp = await storeOrders(body);
-      console.log("response from storeOrders ------>>>>>", resp)
-    }
-
+    // if (err) {
+    //   // Store the order(s) for trying later
+    //   let resp = await storeOrders(body);
+    //   console.log("response from storeOrders ------>>>>>", resp)
+    // }
   }
 
   async SEND_ORDERS_EDITED(body: any): Promise<any> {
@@ -198,6 +207,24 @@ export class _DropiServices {
     });
   }
 
+  /**
+   * Send order to stockago
+   */
+  async postOrderToStockago (order: OrderDTO): Promise<boolean> {
+    // TODO complete function
+    try {
+      console.log()
+    } catch (e) {
+      console.log(e)
+    }
+    return false
+  }
 
+  /**
+   * Return the data transfer object for sending to Stockago, by formatting the Shopify order
+   */
+  getOrderDTO(shopifyOrderPayload: ShopifyOrderPayload): OrderDTO {
+    return {}
+  } 
 
 }
