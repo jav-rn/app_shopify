@@ -151,15 +151,11 @@ export class _DropiServices {
 
   async login(): Promise<any> {
     return await axios.post(this.endpoint.login, {
-      body: {
-        "user": "test",
-        "password": "password"
-      }
+      "email": "admin@stockago.com",
+      "password": "123"
     }, {
       headers: {
-        "Content-Type": "application/json",
-        "Auth-user": this.auth_user,
-        "Auth-token": this.auth_token
+        "Content-Type": "application/json"
       }
     });
   }
