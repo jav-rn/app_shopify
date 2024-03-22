@@ -137,7 +137,7 @@ async function updateOrdersFailed(orders: OrderStored[]) {
 
         })
 
-        
+
     } catch (error) {
         console.log('There was an error updating the orders:', error)
     }

@@ -8,8 +8,6 @@ import { _DropiModelProduct } from "_models/_DropiModelProduct";
 import React, { useState, useEffect } from 'react';
 import { _DropiModelShop } from "../../_models/_DropiModelShop";
 import { NavDropi } from "./body_components/NavDropi";
-import { _DropiServices } from "_services/dropi.services";
-//import { NavDropi } from './NavDropi'
 
 const dropiModelProduct = new _DropiModelProduct();
 
@@ -28,11 +26,8 @@ export const loader: LoaderFunction = async ({ request }) => {
   }
 };
 
-const   dropiServices = new _DropiServices();
 const Products = () => {
 
-  let d= dropiServices.login();
-  console.log("login--->>>",d)
 
   /** loader */
   const [isLoading, setIsLoading] = useState(true);

@@ -5,7 +5,7 @@ import { storeOrders, getAllOrders } from './manage-order-fails.service';
 export interface ShopifyOrderPayload {
   // TODO fill with current properties
   webhook_origin_payload: {
-      id: string
+    id: string
   }
 }
 
@@ -16,17 +16,14 @@ interface OrderDTO {
 export class _DropiServices {
   public url_order_create: any
   public url_update_product: any
-  private accessToken: any
-  private endpoint: any
-  private headers: any
+  public endpoint: any
   private auth_user: any
   private auth_token: any
+  public entity : any
 
   constructor() {
-    this.accessToken = ''; // Este debe consultar el endpoint de login
     this.endpoint = routes
-    this.auth_user = process.env.AUTH_USER;
-    this.auth_token = process.env.AUTH_TOKEN;
+    this.login();
   }
 
   async SEND_DRAFT_ORDERS_CREATE(body: any): Promise<any> {
@@ -56,8 +53,7 @@ export class _DropiServices {
   async SEND_ORDERS_CREATE(body: any): Promise<any> {
     let err = true;
     try {
-      console.log('url-->>', this.endpoint.base_url_local)
-      const response = await axios.post(this.endpoint.TEST_URL,
+      const response = await axios.post(this.endpoint.ORDERS_CREATE,
         body
         , {
           headers: {
@@ -68,7 +64,7 @@ export class _DropiServices {
         });
 
       if (response.data.status) {
-        console.log(response.data)
+        console.log('response_order_create->', response.data, 'token->',this.auth_token)
         err = false;
       }
 
@@ -160,22 +156,31 @@ export class _DropiServices {
   }
 
   async login(): Promise<any> {
-    return await axios.post(this.endpoint.login, {
-      "email": "admin@stockago.com",
-      "password": "123"
-    }, {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-  }
+    try {
+      console.log("url--login-->", this.endpoint.login)
+      let resp = await axios.post(this.endpoint.login,
+        {
+          "email":    process.env.AUTH_STOKAGO_EMAIL,
+          "password": process.env.AUTH_STOKAGO_PASSWORD
+        }
+        , {
+          headers: {
+            "Content-Type": "application/json",
+            "Auth-user":  this.auth_user,
+            "Auth-token": this.auth_token
+          }
+        });
+        if(resp && resp.data && resp.data.login){
+          resp = resp.data;
+          this.auth_token = resp.token;
+          this.auth_user  = resp.hashed_email;
+          this.entity     = resp.user;
+        }
 
-  async get_token() {
-    if (!this.accessToken) {
-      return this.accessToken = ""
-      //return this.login()
-    } else {
-      return this.accessToken = ""
+        console.log("resp->login->", resp);
+
+    } catch (err) {
+      console.log("error request login--->>>", err)
     }
   }
 
@@ -207,7 +212,7 @@ export class _DropiServices {
   /**
    * Send order to stockago
    */
-  async postOrderToStockago (order: OrderDTO): Promise<boolean> {
+  async postOrderToStockago(order: OrderDTO): Promise<boolean> {
     // TODO complete function
     try {
       console.log()
@@ -222,6 +227,6 @@ export class _DropiServices {
    */
   getOrderDTO(shopifyOrderPayload: ShopifyOrderPayload): OrderDTO {
     return {}
-  } 
+  }
 
 }

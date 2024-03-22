@@ -44,7 +44,7 @@ query AllOrders(
 `;
 
 export const loader: LoaderFunction = async ({ request }) => {
-    const { session } = await authenticate.admin(request)
+      const { session } = await authenticate.admin(request)
     const { shop, accessToken } = session;
     const query_base_url = `https://${shop}/admin/api/${apiVersion}/graphql.json`;
   
