@@ -54,33 +54,34 @@ export class _DropiServices {
   }
 
   async SEND_ORDERS_CREATE(body: any): Promise<any> {
-    // let err = true;
-    // try {
-    //   console.log('url-->>', this.endpoint.base_url_local)
-    //   const response = await axios.post(this.endpoint.TEST_URL,
-    //     body
-    //     , {
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         "Auth-user": this.auth_user,
-    //         "Auth-token": this.auth_token
-    //       }
-    //     });
+    let err = true;
+    try {
+      console.log('url-->>', this.endpoint.base_url_local)
+      const response = await axios.post(this.endpoint.TEST_URL,
+        body
+        , {
+          headers: {
+            "Content-Type": "application/json",
+            "Auth-user": this.auth_user,
+            "Auth-token": this.auth_token
+          }
+        });
 
-    //   if (response.data.status) {
-    //     console.log(response)
-    //     err = false;
-    //   }
+      if (response.data.status) {
+        console.log(response.data)
+        err = false;
+      }
 
-    // } catch (err) {
-    //   console.log(err)
-    // }
+    } catch (err) {
+      console.log(err)
+    }
 
-    // if (err) {
-    //   // Store the order(s) for trying later
-    //   let resp = await storeOrders(body);
-    //   console.log("response from storeOrders ------>>>>>", resp)
-    // }
+    if (err) {
+      // Store the order(s) for trying later
+      let resp = await storeOrders(body);
+      console.log("response from storeOrders ------>>>>>", resp)
+    }
+
   }
 
   async SEND_ORDERS_EDITED(body: any): Promise<any> {
