@@ -76,7 +76,6 @@ export const action = async ({ request }) => {
         "query_shop": { "shop_id": result.shop_id, "url": shop, "shop": result.shop }
       }
       // console.log(send_payload)
-
       //dropiServices.console_msg(topic)
 
       if (result.order) {

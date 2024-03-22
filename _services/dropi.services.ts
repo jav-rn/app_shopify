@@ -19,7 +19,7 @@ export class _DropiServices {
   public endpoint: any
   private auth_user: any
   private auth_token: any
-  public entity : any
+  public entity: any
 
   constructor() {
     this.endpoint = routes
@@ -64,7 +64,7 @@ export class _DropiServices {
         });
 
       if (response.data.status) {
-        console.log('response_order_create->', response.data, 'token->',this.auth_token)
+        console.log('response_order_create->', response.data, 'token->', this.auth_token)
         err = false;
       }
 
@@ -160,24 +160,22 @@ export class _DropiServices {
       console.log("url--login-->", this.endpoint.login)
       let resp = await axios.post(this.endpoint.login,
         {
-          "email":    process.env.AUTH_STOKAGO_EMAIL,
+          "email": process.env.AUTH_STOKAGO_EMAIL,
           "password": process.env.AUTH_STOKAGO_PASSWORD
         }
         , {
           headers: {
-            "Content-Type": "application/json",
-            "Auth-user":  this.auth_user,
-            "Auth-token": this.auth_token
+            "Content-Type": "application/json"
           }
         });
-        if(resp && resp.data && resp.data.login){
-          resp = resp.data;
-          this.auth_token = resp.token;
-          this.auth_user  = resp.hashed_email;
-          this.entity     = resp.user;
-        }
+      if (resp && resp.data && resp.data.login) {
+        resp            = resp.data;
+        this.auth_token = resp.token;
+        this.auth_user  = resp.hashed_email;
+        this.entity     = resp.user;
+      }
 
-        console.log("resp->login->", resp);
+      console.log("resp->login->", resp);
 
     } catch (err) {
       console.log("error request login--->>>", err)
@@ -204,7 +202,8 @@ export class _DropiServices {
     }, {
       headers: {
         "Content-Type": "application/json",
-        "X-Shopify-Access-Token": ""
+        "Auth-user": this.auth_user,
+        "Auth-token": this.auth_token
       }
     });
   }
