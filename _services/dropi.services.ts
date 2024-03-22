@@ -1,7 +1,17 @@
 import axios from 'axios';
 import { routes } from './config.services';
-import { storeOrders } from './manage-order-fails.service';
+import { storeOrders, getAllOrders } from './manage-order-fails.service';
 
+export interface ShopifyOrderPayload {
+  // TODO fill with current properties
+  webhook_origin_payload: {
+      id: string
+  }
+}
+
+interface OrderDTO {
+  // TODO fill interface
+}
 
 export class _DropiServices {
   public url_order_create: any
@@ -194,6 +204,24 @@ export class _DropiServices {
     });
   }
 
+  /**
+   * Send order to stockago
+   */
+  async postOrderToStockago (order: OrderDTO): Promise<boolean> {
+    // TODO complete function
+    try {
+      console.log()
+    } catch (e) {
+      console.log(e)
+    }
+    return false
+  }
 
+  /**
+   * Return the data transfer object for sending to Stockago, by formatting the Shopify order
+   */
+  getOrderDTO(shopifyOrderPayload: ShopifyOrderPayload): OrderDTO {
+    return {}
+  } 
 
 }
