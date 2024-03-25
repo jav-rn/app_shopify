@@ -12,7 +12,7 @@ import {
   import { apiVersion, authenticate } from "~/shopify.server";
   import logoDropi from "../../public/avatar.png";
 
-  import { getAllOrders } from '../../_services/manage-order-fails.service';
+  import { getAllOrders } from '../resources/_services/manageOrdersFailure.service';
 
 
 

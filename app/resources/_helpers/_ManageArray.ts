@@ -1,8 +1,5 @@
 export class _ManageArray {
 
-
-
-
     updateArray = (objeto: any, array: any): any[] => {
         var indice = -1;
         // Recorre el array para verificar si el objeto ya existe

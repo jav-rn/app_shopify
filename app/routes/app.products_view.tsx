@@ -4,9 +4,9 @@ import { Card, Layout, List, Page, DataTable, Thumbnail, useIndexResourceState, 
 import { getPaginationVariables, Pagination } from '@shopify/hydrogen';
 import { apiVersion, authenticate } from "~/shopify.server";
 //import { _DropiModelOrder } from "_models/_DropiModelOrder";
-import { _DropiModelProduct } from "_models/_DropiModelProduct";
+import { _DropiModelProduct } from "~/resources/_models/_DropiModelProduct";
 import React, { useState, useEffect } from 'react';
-import { _DropiModelShop } from "../../_models/_DropiModelShop";
+import { _DropiModelShop } from "../resources/_models/_DropiModelShop";
 import { NavDropi } from "./body_components/NavDropi";
 
 const dropiModelProduct = new _DropiModelProduct();

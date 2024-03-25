@@ -1,5 +1,4 @@
-import { _DropiModelProduct } from "_models/_DropiModelProduct";
-import { _DadController } from "./_DadController";
+import { _DropiModelProduct } from "~/resources/_models/_DropiModelProduct";
 
 export class _DropiControllerProduct {
     dropiModelProduct: any;
@@ -13,7 +12,7 @@ export class _DropiControllerProduct {
         console.log("llego a creacion de producto");
         console.log("controller products", product);
 
-        let  variables = {};
+        let variables = {};
         variables.input = {};
         variables.input.title = `ttttt111`;
         variables.input.variants = [];

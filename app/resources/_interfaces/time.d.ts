@@ -1,0 +1,1 @@
+export type TimeInterval = 's' | 'mi' | 'h' | 'd' | 'w' | 'm'
