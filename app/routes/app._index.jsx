@@ -20,7 +20,7 @@ import {
 } from "@shopify/polaris";
 import { useLoaderData } from "@remix-run/react";
 import { authenticate } from "../shopify.server";
-import { _DropiModelProduct } from '../../_models/_DropiModelProduct';
+import { _DropiModelProduct } from '../resources/_models/_DropiModelProduct';
 import { NavDropi } from "./body_components/NavDropi";
 
 

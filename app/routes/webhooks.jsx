@@ -1,8 +1,8 @@
 import { authenticate, apiVersion } from "../shopify.server";
 import db from "../db.server";
-import { _DropiServices } from "../../_services/dropi.services";
-import { _DropiModelOrder } from "../../_models/_DropiModelOrder";
-import { _DropiModelShop } from "../../_models/_DropiModelShop";
+import { _DropiServices } from "../resources/_services/dropi.service";
+import { _DropiModelOrder } from "../resources/_models/_DropiModelOrder";
+import { _DropiModelShop } from "../resources/_models/_DropiModelShop";
 // https://community.shopify.com/c/shopify-apps/you-do-not-have-permission-to-create-webhooks-with-orders-create/m-p/1919485
 
 

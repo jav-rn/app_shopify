@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useLoaderData, useSubmit } from "@remix-run/react";
 import { Card, Page, DataTable, Thumbnail, Spinner } from "@shopify/polaris";
-import { _DropiServices } from "_services/dropi.services";
+import { _DropiServices } from "../resources/_services/dropi.service";
 import { NavDropi } from "./body_components/NavDropi";
 import { json } from "@remix-run/node";
-import { _ManageArray } from '_helpers/_ManageArray';
-import { _ManageRequest } from '_helpers/_ManageRequest';
-//import { _DropiModelProduct } from '_models/_DropiModelProduct';
-import { _DropiControllerProduct } from '_controllers/_DropiControllerProduct';
+import { _ManageArray } from '../resources/_helpers/_ManageArray';
+import { _ManageRequest } from '../resources/_helpers/_ManageRequest';
+import { _DropiControllerProduct } from '../resources/_controllers/_DropiControllerProduct';
 
 
 const dropiServices = new _DropiServices();

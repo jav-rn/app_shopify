@@ -5,7 +5,7 @@ const  base_url = [
     "https://stockago.com/", // produccion OJO actualizar al endpoint de orders stockago
     "https://error.test/",
 ];
-let envNumber = 0;
+let envNumber = 1;
 
 export const routes = {
     ORDERS_CREATE             : base_url[envNumber]+"api/orders/create_shopify/",
