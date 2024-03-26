@@ -22,6 +22,7 @@ export class _DropiServices {
     constructor() {
         this.endpoint = routes;
         this.storeFailOrdersService = new StoreFailOrdersService();
+        this.login()
     }
 
     async SEND_DRAFT_ORDERS_CREATE(body: any): Promise<any> {
@@ -108,15 +109,6 @@ export class _DropiServices {
         });
     }
 
-    console_msg(topic: any, end = true) {
-        if (end) {
-            console.log("< END >");
-            console.log("<--------------" + topic + "-------------->");
-        } else {
-            console.log("<--------------" + topic + "-------------->");
-            console.log("< INI >");
-        }
-    }
 
     async getproductsStockAgo(): Promise<any> {
         return await axios.post(
@@ -135,6 +127,51 @@ export class _DropiServices {
                 },
             },
         );
+    }
+
+
+
+    async login(): Promise<any> {
+        try {
+            console.log("url--login-->", this.endpoint.login)
+            let resp = await axios.post(this.endpoint.login,
+                {
+                    "email": process.env.AUTH_STOKAGO_EMAIL,
+                    "password": process.env.AUTH_STOKAGO_PASSWORD
+                }
+                , {
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+            if (resp && resp.data && resp.data.login) {
+                resp = resp.data;
+                this.auth_token  = resp.token;
+                this.auth_user   = resp.hashed_email;
+                this.entity      = resp.user;
+                console.log("login ok");
+            } else {
+                console.warn("error de credenciales");
+            }
+
+           return {
+                auth_user:  this.auth_user,
+                auth_token: this.auth_token,
+           };
+
+        } catch (err) {
+            console.log("error request login--->>>", err)
+        }
+    }
+
+    console_msg(topic: any, end = true) {
+        if (end) {
+            console.log("< END >")
+            console.log("<--------------" + topic + "-------------->")
+        } else {
+            console.log("<--------------" + topic + "-------------->")
+            console.log("< INI >")
+        }
     }
 
     /**
@@ -158,7 +195,7 @@ export class _DropiServices {
             const payload = getOrderDTO(body);
             if (!payload) throw new Error("The body has an incorrect format");
 
-            const credentials = await loginStockago();
+            const credentials = await this.login();
 
             if (!credentials) throw new Error("Invalid credentials");
 

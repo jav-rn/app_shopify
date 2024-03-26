@@ -2,7 +2,7 @@
 
 client_id = "43dd49cffb45682dddc07c4fa6687663"
 name = "dropicon"
-application_url = "https://items-lovers-meat-sox.trycloudflare.com"
+application_url = "https://article-pal-offerings-trash.trycloudflare.com"
 embedded = true
 
 [build]
@@ -16,9 +16,9 @@ scopes = "read_customers,read_draft_orders,read_locales,read_locations,read_mark
 
 [auth]
 redirect_urls = [
-  "https://items-lovers-meat-sox.trycloudflare.com/auth/callback",
-  "https://items-lovers-meat-sox.trycloudflare.com/auth/shopify/callback",
-  "https://items-lovers-meat-sox.trycloudflare.com/api/auth/callback"
+  "https://article-pal-offerings-trash.trycloudflare.com/auth/callback",
+  "https://article-pal-offerings-trash.trycloudflare.com/auth/shopify/callback",
+  "https://article-pal-offerings-trash.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
