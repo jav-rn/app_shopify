@@ -3,6 +3,7 @@ import axios from "axios";
 import type { OrderDTO } from "../_interfaces/orders";
 import type { StockagoCredentials, StockagoResponse } from "../_interfaces/stockago"
 import { routes } from "./config.service";
+import { _DropiServices } from "./dropi.service";
 
 export async function postOrderToStockago(order: OrderDTO, credentials: StockagoCredentials): Promise<StockagoResponse | null>{
     try {
@@ -69,6 +70,10 @@ export function getOrderDTO(shopifyOrder: any): OrderDTO | null {
 
 export async function loginStockago(): Promise<StockagoCredentials | null> {
     try {
+        let dropiService = new _DropiServices();
+        return dropiService.login();
+        /*
+
         let resp = await axios.post(
             routes.login,
             {
@@ -88,6 +93,7 @@ export async function loginStockago(): Promise<StockagoCredentials | null> {
                 auth_token: data.auth_token,
             };
         }
+        */
     } catch (err) {
         console.log("There was an error while login");
     }

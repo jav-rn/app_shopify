@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import type { StockagoCredentials } from "../_interfaces/stockago"
 import StoreFailOrdersService from "./manageOrdersFailure.service";
 import { routes } from "./config.service";
 import {
@@ -16,6 +16,7 @@ export class _DropiServices {
     private auth_user: any;
     private auth_token: any;
     public entity: any;
+    public credentials: any;
 
     private storeFailOrdersService: StoreFailOrdersService;
 
@@ -108,15 +109,6 @@ export class _DropiServices {
         });
     }
 
-    console_msg(topic: any, end = true) {
-        if (end) {
-            console.log("< END >");
-            console.log("<--------------" + topic + "-------------->");
-        } else {
-            console.log("<--------------" + topic + "-------------->");
-            console.log("< INI >");
-        }
-    }
 
     async getproductsStockAgo(): Promise<any> {
         return await axios.post(
@@ -137,6 +129,57 @@ export class _DropiServices {
         );
     }
 
+
+
+    async login(): Promise<StockagoCredentials | null> {
+        try {
+            if (this.credentials && this.credentials != null) {
+                console.log("ya esta logeado");
+                return this.credentials;
+            }
+            console.log("url--login-->", this.endpoint.login)
+            let resp = await axios.post(this.endpoint.login,
+                {
+                    "email": process.env.AUTH_STOKAGO_EMAIL,
+                    "password": process.env.AUTH_STOKAGO_PASSWORD
+                }
+                , {
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+            if (resp && resp.data && resp.data.login) {
+                resp = resp.data;
+                this.auth_token  = resp.token;
+                this.auth_user   = resp.hashed_email;
+                this.entity      = resp.user;
+                console.log("login ok");
+
+                this.credentials = {
+                    auth_user: this.auth_user,
+                    auth_token: this.auth_token,
+                }
+                return this.credentials;
+            } else {
+                console.warn("error de credenciales");
+                return null;
+            }
+
+        } catch (err) {
+            console.log("error request login--->>>", err)
+        }
+    }
+
+    console_msg(topic: any, end = true) {
+        if (end) {
+            console.log("< END >")
+            console.log("<--------------" + topic + "-------------->")
+        } else {
+            console.log("<--------------" + topic + "-------------->")
+            console.log("< INI >")
+        }
+    }
+
     /**
      * Send order to stockago
      */
@@ -153,12 +196,18 @@ export class _DropiServices {
     async sendOrdersCreate(body: any): Promise<boolean> {
         let err = true;
         let errorMsg = "";
-
+        let credentials = null;
         try {
+
             const payload = getOrderDTO(body);
             if (!payload) throw new Error("The body has an incorrect format");
 
-            const credentials = await loginStockago();
+            if (!this.credentials) {
+                credentials = await loginStockago();
+            } else {
+                credentials = this.credentials;
+            }
+            console.log("sendOrdersCreate credenciales", credentials)
 
             if (!credentials) throw new Error("Invalid credentials");
 
@@ -181,24 +230,20 @@ export class _DropiServices {
                     ? error.message
                     : "There was a error sending data to Stockago";
         }
-
         if (err) {
-            /*
-            Store the order for trying later
-            */
+            // Store the order for trying later
             this.storeFailOrdersService
                 .storeFailSyncOrder(body, errorMsg)
                 .then((response) => {
                     console.log("Response from firebase -->>", response);
                     process.exit();
                 });
-
             /*
             Schedule task for retry to send orders. It's activated here because of the performance, this is:
             There is no way to know if there is pending orders more that looking for stored fail orders,
             but it's sure that the application have to retry if there is a non saved order
             */
-            await this.storeFailOrdersService.activateFetchOrdersTask(10, "m");
+            //await this.storeFailOrdersService.activateFetchOrdersTask(10, "m");
 
             return false;
         }
