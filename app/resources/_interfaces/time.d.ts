@@ -1,1 +1,1 @@
-export type TimeInterval = 's' | 'mi' | 'h' | 'd' | 'w' | 'm'
+export type TimeInterval = 's' | 'm' | 'h' | 'd' | 'w'

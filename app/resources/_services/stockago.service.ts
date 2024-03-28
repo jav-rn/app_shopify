@@ -21,6 +21,7 @@ export async function postOrderToStockago(order: OrderDTO, credentials: Stockago
 }
 
 export function getOrderDTO(shopifyOrder: any): OrderDTO | null {
+    console.log(shopifyOrder)
     const setBlankValue = (value: any, defaultValue: any = '') => value || defaultValue
     try {
         const shopifyOrderPayload = shopifyOrder['webhook_origin_payload']
@@ -29,6 +30,8 @@ export function getOrderDTO(shopifyOrder: any): OrderDTO | null {
         const customerData = shopifyOrderPayload['customer']
         const shipingData = shopifyOrderPayload['shipping_address']
         const lineItems = shopifyOrderPayload['line_items']
+
+        if (!shipingData || !lineItems) return null;
     
         const orderObject: OrderDTO = {
             name: `${setBlankValue(shipingData['first_name'])} ${setBlankValue(shipingData['last_name'])}`,

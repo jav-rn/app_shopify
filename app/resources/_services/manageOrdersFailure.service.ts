@@ -48,8 +48,7 @@ export default class StoreFailOrdersService {
      */
     async storeFailSyncOrder (shopifyOrder: ShopifyOrderPayload, errorMsg: string = ''): Promise<boolean> {
         try {
-            // const shopifyOrderId = shopifyOrder.webhook_origin_payload.id // TODO uncoment
-            const shopifyOrderId = Math.floor(Math.random() * (1000 - 0 + 1)) + 0
+            const shopifyOrderId = shopifyOrder.webhook_origin_payload.id
             const orderRef = doc(this.db, 'orders', shopifyOrderId + '')
     
             const orderData: OrderStored = {
@@ -204,6 +203,7 @@ export default class StoreFailOrdersService {
         }
     
         const timeInMilliseconds = getTimeInmilliseconds(timeAmount, timeUnit)
+        console.log(timeInMilliseconds)
     
         return setInterval(this.retrySentOrders, timeInMilliseconds);
     }
